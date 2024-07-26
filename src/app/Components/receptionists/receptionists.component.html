@@ -1,0 +1,128 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="input d-flex align-items-center px-3 py-1 h-100">
+          <i class="fa-solid fa-magnifying-glass pe-3"></i>
+          <input type="search" placeholder="search by nurse name..." class="form-control" [(ngModel)]="searchTerm">
+        </div>
+      </div>
+      <button mat-mini-fab color="primary" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="(receptionists | searchForPatient: searchTerm).length > 0">Receptionists</h1>
+    <h1 class="mb-3" *ngIf="(receptionists | searchForPatient: searchTerm).length == 0">No Receptionists Recorded</h1>
+    <div class="row">
+      <div class="col-5">
+        <div class="emergency table-large container-fluid py-3 rounded shadow"
+          *ngIf="(receptionists | searchForPatient: searchTerm).length > 0">
+          <div class="cell mx-2 rounded mb-2"
+            *ngFor="let receptionist of (receptionists | searchForPatient: searchTerm)">
+            <div class="row g-0 py-2 px-2" (click)="selectNurse(receptionist.id)">
+              <div class="col-8">
+                <div class="inner d-flex">
+                  <img [src]="(receptionist?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                    style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                  <div class="data">
+                    <h5 class="mb-0">{{receptionist.firstName}} {{receptionist.lastName}}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                  <button class="btn-chat btn rounded-pill">View Details <i
+                      class="fa-solid fa-angle-right ms-2"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-7" *ngIf="(receptionists | searchForPatient: searchTerm).length > 0">
+        <div class="emergency table-large rounded shadow position-relative">
+          <div class="header-chat mb-1 px-3 py-2 border-bottom d-flex">
+            <div class="header-info d-flex" *ngIf="isOpen">
+              <img [src]="(openedNurse?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+              <div class="data">
+                <h5 class="mb-0">{{openedNurse?.firstName}} {{openedNurse?.lastName}}</h5>
+                <p class="text-muted m-0">Nurse</p>
+              </div>
+            </div>
+            <div class="header-info d-flex py-2" *ngIf="!isOpen">
+              <h5>Select a nurse to view info</h5>
+            </div>
+          </div>
+          <div class="messages-area p-3" style="height: 58vh;" *ngIf="isOpen">
+            <div class="cell mx-2 rounded mb-2">
+              <div class="row g-0 py-2 px-2">
+                <div class="col-8">
+                  <div class="inner d-flex p-3">
+                    <div class="data">
+                      <h5 class="mb-0">Username: {{openedNurse.userName}}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cell mx-2 rounded mb-2">
+              <div class="row g-0 py-2 px-2">
+                <div class="col-8">
+                  <div class="inner d-flex p-3">
+                    <div class="data">
+                      <h5 class="mb-0">Email: {{openedNurse.email}}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cell mx-2 rounded mb-2">
+              <div class="row g-0 py-2 px-2">
+                <div class="col-8">
+                  <div class="inner d-flex p-3">
+                    <div class="data">
+                      <h5 class="mb-0">Phone: {{openedNurse.phoneNumber}}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cell mx-2 rounded mb-2">
+              <div class="row g-0 py-2 px-2">
+                <div class="col-8">
+                  <div class="inner d-flex p-3">
+                    <div class="data">
+                      <h5 class="mb-0">Address: {{openedNurse.address}}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="cell mx-2 rounded mb-2" *ngIf="adminAddedUser">
+              <div class="row g-0 py-2 px-2">
+                <div class="col-8">
+                  <div class="inner d-flex p-3">
+                    <div class="data">
+                      <h5 class="mb-0">Admin added user: {{adminAddedUser?.firstName}} {{adminAddedUser?.lastName}}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="no-messages px-3 d-flex justify-content-center align-items-center" style="height: 58vh;"
+            *ngIf="!isOpen">
+            <div class="body w-50 text-center">
+              <img class="w-100" src="./assets/nothing-selected.jpg" alt="">
+              <h2 class="display-6">No Receptionist Selected</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

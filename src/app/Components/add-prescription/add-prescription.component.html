@@ -1,0 +1,104 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5">Add Prescription</h1>
+        <form class="example-form" [formGroup]="prescriptionDataForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Diagnosis</mat-label>
+                        <input type="text" formControlName="diagnosis" matInput placeholder="Write Diagnosis">
+                        <mat-error
+                            *ngIf="prescriptionDataForm.get('diagnosis')?.getError('required') && prescriptionDataForm.get('diagnosis')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Advice</mat-label>
+                        <input type="text" formControlName="advice" matInput placeholder="Write an advice">
+                        <mat-error
+                            *ngIf="prescriptionDataForm.get('advice')?.getError('required') && prescriptionDataForm.get('advice')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Add Medicine If Required</mat-label>
+                        <mat-chip-grid #chipGrid aria-label="Medicine selection">
+                            <mat-chip-row *ngFor="let medicine of checkedMedicine" (removed)="removeMedicine(medicine)">
+                                {{medicine?.name}} - {{medicine?.category}}
+                                <button matChipRemove [attr.aria-label]="'remove ' + medicine.name">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input placeholder="Add Medicine..." #medicineInput [formControl]="medicineCtrl"
+                            [matChipInputFor]="chipGrid" [matAutocomplete]="auto1"
+                            (matChipInputTokenEnd)="addMedicine($event)" />
+                        <mat-autocomplete #auto1="matAutocomplete" (optionSelected)="selectedMedicine($event)">
+                            <mat-option *ngFor="let medicine of filteredMedicine | async" [value]="medicine">
+                                {{medicine?.name}} - {{medicine?.category}} - {{medicine?.price | currency:'EGP'}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Add Checkup If Required</mat-label>
+                        <mat-chip-grid #checkupChipGrid aria-label="Checkup selection">
+                            <mat-chip-row *ngFor="let checkup of checkedCheckups" (removed)="removeCheckup(checkup)">
+                                {{checkup?.name}}
+                                <button matChipRemove [attr.aria-label]="'remove ' + checkup.name">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input placeholder="Add Checkup..." #checkupInput [formControl]="checkupCtrl"
+                            [matChipInputFor]="checkupChipGrid" [matAutocomplete]="checkupAuto"
+                            (matChipInputTokenEnd)="addCheckup($event)" />
+                        <mat-autocomplete #checkupAuto="matAutocomplete" (optionSelected)="selectedCheckup($event)">
+                            <mat-option *ngFor="let checkup of filteredCheckup | async" [value]="checkup">
+                                {{checkup?.name}} - {{checkup?.price | currency:'EGP'}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Add Radiology If Required</mat-label>
+                        <mat-chip-grid #radiologyChipGrid aria-label="Radiology selection">
+                            <mat-chip-row *ngFor="let radiology of checkedRadiologies" (removed)="removeRadiology(radiology)">
+                                {{radiology?.name}}
+                                <button matChipRemove [attr.aria-label]="'remove ' + radiology.name">
+                                    <mat-icon>cancel</mat-icon>
+                                </button>
+                            </mat-chip-row>
+                        </mat-chip-grid>
+                        <input placeholder="Add Radiology..." #radiologyInput [formControl]="radiologyCtrl"
+                            [matChipInputFor]="radiologyChipGrid" [matAutocomplete]="radiologyAuto"
+                            (matChipInputTokenEnd)="addRadiology($event)" />
+                        <mat-autocomplete #radiologyAuto="matAutocomplete" (optionSelected)="selectedRadiology($event)">
+                            <mat-option *ngFor="let radiology of filteredRadiology | async" [value]="radiology">
+                                {{radiology?.name}} - {{radiology?.price | currency:'EGP'}}
+                            </mat-option>
+                        </mat-autocomplete>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Details</mat-label>
+                        <textarea formControlName="details" matInput placeholder="Write in details..."></textarea>
+                        <mat-error
+                            *ngIf="prescriptionDataForm.get('details')?.getError('required') && prescriptionDataForm.get('details')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="hstack justify-content-end">
+                <button [disabled]="prescriptionDataForm.status != 'VALID'" mat-raised-button color="primary">Add
+                    Prescription</button>
+            </div>
+        </form>
+    </div>
+</section>

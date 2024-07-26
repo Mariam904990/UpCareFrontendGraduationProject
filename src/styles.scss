@@ -1,0 +1,270 @@
+/* You can add global styles to this file, and also import other style files */
+
+:root {
+    --bg-gray-main: #F1F5F8;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+    background-color: var(--bg-gray-main);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+    color: #3e3e3e;
+}
+
+* {
+    transition: .3s;
+}
+
+.outer {
+
+    height: 35px;
+    width: 35px;
+}
+
+a {
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.nav-link {
+    color: #3E3E3E;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+
+    i {
+        font-size: 1.5rem;
+        color: #3E3E3E;
+    }
+
+    .position-absolute {
+        left: 0;
+        transform: translateX(-150%);
+        opacity: 0;
+    }
+
+    .outer-icon {
+        background-color: #3e3e3e;
+        opacity: 1 !important;
+        border-radius: 3px;
+
+        i {
+            color: #fff;
+        }
+    }
+
+    &:hover {
+        i {
+            color: #2662F0;
+            opacity: 1;
+        }
+
+        p {
+            color: #3E3E3E;
+        }
+
+        .outer-icon {
+            height: 35px;
+            width: 35px;
+            background-color: #2662F0;
+            opacity: 1 !important;
+            border-radius: 3px;
+
+            i {
+                color: #fff;
+            }
+        }
+    }
+}
+
+.nav-link-acive {
+    color: #3E3E3E;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+
+    i {
+        font-size: 1.5rem;
+        color: #2662F0;
+        opacity: 1 !important;
+    }
+
+    .position-absolute {
+        left: 0;
+        transform: translateX(-150%);
+        opacity: 0;
+    }
+
+    .outer-icon {
+        background-color: #2662F0;
+        opacity: 1 !important;
+        border-radius: 3px;
+
+        i {
+            color: #fff;
+        }
+    }
+}
+
+.shadow {
+    box-shadow: 0 0 3px #142d6e2e !important;
+}
+
+.input {
+    background-color: #FFF;
+    border-radius: 10px;
+
+    i {
+        color: #CCC;
+        border-right: 1px solid #CCC;
+    }
+
+    .form-control[type="search"] {
+        border: none;
+
+        &:focus {
+            border: none;
+            outline: none;
+            box-shadow: none;
+        }
+    }
+}
+
+.table-large {
+    min-height: 76vh;
+    max-height: 76vh;
+    overflow-y: auto;
+}
+
+.table-small {
+    min-height: 45vh;
+    max-height: 45vh;
+    overflow-y: auto;
+}
+
+.table-medium {
+    min-height: 60vh;
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+/* width */
+::-webkit-scrollbar {
+    position: absolute;
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 1px #142E6E;
+    border-radius: 5px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #959595;
+}
+
+.message {
+    width: 75%;
+}
+
+.messages-area {
+    overflow-y: auto;
+}
+
+.sent,
+.feed {
+    background-color: #2662F0;
+    color: #fff;
+    border-radius: 10px;
+    margin-right: auto;
+
+    p,
+    span {
+        color: #fff;
+    }
+}
+
+.sent {
+    border-bottom-left-radius: 0;
+}
+
+.feed {
+    border-top-left-radius: 0;
+}
+
+.received {
+    background-color: #eee;
+    color: #3e3e3e;
+    border-radius: 10px;
+    border-bottom-right-radius: 0;
+    margin-left: auto;
+
+    p,
+    span {
+        color: #3e3e3e;
+    }
+}
+
+.no-messages {
+    h2 {
+        color: #2662F0;
+    }
+}
+
+.card-light {
+    background-color: #fff;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+
+.btn-chat {
+    background-color: #fff;
+
+    &:hover {
+        background-color: #34d1bf;
+        color: #fff;
+    }
+}
+
+.cell {
+    background-color: #FAFBFD;
+    transition: .3s;
+
+    &:hover {
+        background-color: #F1F5F8;
+    }
+}
+
+// .cdk-global-overlay-wrapper {
+//     display: flex;
+//     position: absolute;
+//     z-index: 1000;
+//     overflow: auto;
+//     pointer-events: auto !important;  
+//   }

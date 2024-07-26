@@ -1,0 +1,40 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5">Book in Room No. {{data?.id}}</h1>
+        <form [formGroup]="bookingDataForm" (ngSubmit)="submitForm()">
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Choose a registered patient</mat-label>
+                <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="patientCtrl"
+                    [matAutocomplete]="auto">
+                <mat-autocomplete (optionSelected)="onPatientSelected($event)" autoActiveFirstOption #auto="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredPatients | async" [value]="option">
+                        {{option?.firstName}} {{option?.lastName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Choose a doctor as supervisor</mat-label>
+                <input type="text" placeholder="Pick one" aria-label="Number" matInput [formControl]="doctorCtrl"
+                    [matAutocomplete]="auto2">
+                <mat-autocomplete (optionSelected)="onDoctorSelected($event)" autoActiveFirstOption #auto2="matAutocomplete">
+                    <mat-option *ngFor="let option of filteredDoctors | async" [value]="option">
+                        {{option?.firstName}} {{option?.lastName}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Numberof booked beds</mat-label>
+                <input type="number" formControlName="numberOfRecievedBeds" matInput placeholder="Ex. 2">
+                <mat-error
+                    *ngIf="bookingDataForm.get('numberOfRecievedBeds')?.getError('required') && bookingDataForm.get('numberOfRecievedBeds')?.touched">
+                    This field is <strong>required</strong></mat-error>
+                <mat-error
+                    *ngIf="(bookingDataForm.get('numberOfRecievedBeds')?.getError('min') || bookingDataForm.get('numberOfRecievedBeds')?.getError('max')) && bookingDataForm.get('numberOfRecievedBeds')?.touched">
+                    This field's value <strong>1 ~ {{data?.availableBedsNumber}}</strong></mat-error>
+            </mat-form-field>
+            <div class="hstack justify-content-end">
+                <button [disabled]="bookingDataForm.status != 'VALID' || patientCtrl.status != 'VALID' || doctorCtrl.status != 'VALID'" mat-raised-button color="primary" class="me-2" type="submit">Book Room</button>
+            </div>
+        </form>
+    </div>
+</section>

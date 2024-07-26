@@ -1,0 +1,42 @@
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+.emergency {
+    background-color: #fff;
+}
+
+.inner {
+    .head {
+        h3{
+            letter-spacing: 1px;
+        }
+    }
+}
+.icon-specialization {
+    background-color: #FF715B;
+    i{
+        color: #FFF;
+    }
+}
+.icon-checkup {
+    background-color: #34D1BF;
+    i{
+        color: #FFF;
+    }
+}
+.icon-radiology {
+    background-color: #7ED321;
+    i{
+        color: #FFF;
+    }
+}
+
+.cell {
+    background-color: #FAFBFD;
+    transition: .3s;
+    &:hover{
+        background-color: #F1F5F8;
+    }
+}

@@ -1,0 +1,58 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5">Add Record</h1>
+        <form class="example-form" [formGroup]="nurseCareFormData" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Suger</mat-label>
+                        <input type="text" formControlName="suger" matInput placeholder="Ex. 30%">
+                        <mat-error
+                            *ngIf="nurseCareFormData.get('suger')?.getError('required') && nurseCareFormData.get('suger')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Beat Per Minute</mat-label>
+                        <input type="text" formControlName="beatPerMinute" matInput placeholder="Ex. 30%">
+                        <mat-error
+                            *ngIf="nurseCareFormData.get('beatPerMinute')?.getError('required') && nurseCareFormData.get('beatPerMinute')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Oxygen Saturation</mat-label>
+                        <input type="text" formControlName="oxygenSaturation" matInput placeholder="Ex. 30%">
+                        <mat-error
+                            *ngIf="nurseCareFormData.get('oxygenSaturation')?.getError('required') && nurseCareFormData.get('oxygenSaturation')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Blood Presuse</mat-label>
+                        <input type="text" formControlName="bloodPresure" matInput placeholder="Ex. 30%">
+                        <mat-error
+                            *ngIf="nurseCareFormData.get('bloodPresure')?.getError('required') && nurseCareFormData.get('bloodPresure')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Leave Note</mat-label>
+                        <input type="text" formControlName="notes" matInput placeholder="Ex. Case is stable">
+                        <mat-error
+                            *ngIf="nurseCareFormData.get('notes')?.getError('required') && nurseCareFormData.get('notes')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="hstack justify-content-end">
+                <button [disabled]="nurseCareFormData.status != 'VALID'" mat-raised-button color="primary">Add Room Data</button>
+            </div>
+        </form>
+    </div>
+</section>

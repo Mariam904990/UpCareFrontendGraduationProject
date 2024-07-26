@@ -1,0 +1,72 @@
+<section class="p-3">
+    <div class="container-fluid">
+        <h1 class="display-5">Room No. {{data?.roomId}}</h1>
+        <h3>Patient name. {{patient?.firstName}} {{patient?.lastName}}</h3>
+        <h2 class="display-3 my-5 text-center" *ngIf="records.length == 0">No Records Added</h2>
+        <div class="container content">
+            <div class="row cell mx-2 rounded py-2 mb-2" *ngFor="let record of records; let index = index">
+                <div class="col-12">
+                    <div class="according" id="accordingExample">
+                        <div class="accordion-item">
+                            <h2 class="accordion-header">
+                                <button title="Click to expand" class="accordion-button" type="button"
+                                    data-bs-toggle="collapse" [attr.data-bs-target]="'#'+record?.patient?.id + index"
+                                    aria-expanded="false" [attr.aria-controls]="record?.patient?.id + index">
+                                    <div class="inner d-flex">
+                                        <div class="patient-info d-flex">
+                                            <img [src]="(record?.patient?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                                                style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                                            <div class="data">
+                                                <h5>{{record?.patient?.firstName}}
+                                                    {{record?.patient?.lastName}}</h5>
+                                                <p class="text-muted m-0">{{getDateOnly(record?.dateTime)}} <i
+                                                        class="fa-solid fa-calendar-days ms-2 me-3"></i>
+                                                    {{getTimeOnly(record?.dateTime)}} <i
+                                                        class="fa-regular fa-clock ms-2"></i></p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </button>
+                            </h2>
+                            <div [id]="record?.patient?.id + index" class="accordion-collapse collapse mt-2"
+                                data-bs-parent="#accordionExample">
+                                <div class="accordion-body">
+                                    <div class="inner card-light rounded p-3">
+                                        <ul class="list-unstyled">
+                                            <li class="mb-2">
+                                                <p class="m-0"><strong>Beat per minute: </strong>{{record?.beatPerMinute}}
+                                                </p>
+                                            </li>
+                                            <li class="mb-2">
+                                                <p class="m-0"><strong>Blood presure: </strong>{{record?.bloodPresure}}</p>
+                                            </li>
+                                            <li class="mb-2">
+                                                <p class="m-0"><strong>Oxygen saturation:
+                                                    </strong>{{record?.oxygenSaturation}}</p>
+                                            </li>
+                                            <li class="mb-2">
+                                                <p class="m-0"><strong>Suger: </strong>{{record?.suger}}</p>
+                                            </li>
+                                            <li class="mb-2">
+                                                <p class="m-0"><strong>Notes: </strong>{{record?.notes}}</p>
+                                            </li>
+                                            <li class="mb-2">
+                                                <p class="m-0"><strong>Added by nurse: </strong>{{record?.nurse?.firstName}}
+                                                    {{record?.nurse?.lastName}}</p>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hstack justify-content-end" *ngIf="_AuthService.user?.userRole == 'nurse'">
+            <button mat-raised-button color="warm" class="me-2" (click)="goToPatientProfile()">Patient Profile
+            </button>
+            <button mat-raised-button color="primary" class="me-2" (click)="open()">Add New Record</button>
+        </div>
+    </div>
+</section>

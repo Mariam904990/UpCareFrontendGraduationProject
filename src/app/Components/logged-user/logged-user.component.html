@@ -1,0 +1,19 @@
+<div class="user d-flex align-items-center">
+    <img src="./assets/user-male.svg" class="w-25 rounded me-2" alt="">
+    <div class="user-info w-75 d-flex align-items-center justify-content-between position-relative">
+        <div class="inner">
+            <h6 class="m-0">{{_AuthService.user?.firstName}}</h6>
+            <span>{{_AuthService.user?.userRole}}</span>
+        </div>
+        <i class="fa-solid fa-angle-down h3" style="color: #3e3e3e; cursor: pointer;"
+            (click)="dropToggle()"></i>
+        <div style="display: none;" class="drop card shadow position-absolute w-100 py-3">
+            <ul class="list-unstyled m-0 d-flex align-items-center justify-content-center flex-column">
+                <li class="d-flex align-items-center mb-2" (click)="_AuthService.logout()">
+                    <i class="fa-solid fa-arrow-right-from-bracket me-2"></i>
+                    <p class="m-0 cursor-pointer">Logout</p>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<section>
+    <div class="container-fluid py-3">
+        <div class="header row justify-content-between mb-3">
+            <div class="col-9">
+                <div class="input d-flex align-items-center px-3 py-1 h-100">
+                    <i class="fa-solid fa-magnifying-glass pe-3"></i>
+                    <input type="search" placeholder="search by doctor name..." class="form-control"
+                        [(ngModel)]="searchTerm">
+                </div>
+            </div>
+            <div class="col-2">
+                <app-logged-user></app-logged-user>
+            </div>
+        </div>
+        <h1 class="mb-3" *ngIf="(admins | searchForPatient: searchTerm).length > 0">Messages</h1>
+        <h1 class="mb-3" *ngIf="(admins | searchForPatient: searchTerm).length == 0">No Messages Recorded</h1>
+        <div class="row">
+            <div class="col-5">
+                <div class="emergency table-large container-fluid py-3 rounded shadow"
+                    *ngIf="(admins | searchForPatient: searchTerm).length > 0">
+                    <h3 class="mx-2">Admins</h3>
+                    <div class="cell mx-2 rounded mb-2" *ngFor="let admin of (admins | searchForPatient: searchTerm)">
+                        <div class="row g-0 py-2 px-2" (click)="selectChat(admin.id)">
+                            <div class="col-8">
+                                <div class="inner d-flex">
+                                    <img [src]="(admin?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                                        style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                                    <div class="data">
+                                        <h5 class="mb-0">{{admin.firstName}} {{admin.lastName}}</h5>
+                                        <!-- <p class="text-muted m-0">{{doctor.speciality}}</p> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                                    <button class="btn-chat btn rounded-pill">Chat <i
+                                            class="fa-solid fa-angle-right ms-2"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7" *ngIf="(admins | searchForPatient: searchTerm).length > 0">
+                <div class="emergency table-large rounded shadow position-relative">
+                    <div class="header-chat mb-1 px-3 py-2 border-bottom d-flex">
+                        <div class="header-info d-flex" *ngIf="isOpen">
+                            <img [src]="(openedAdmin?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                                style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                            <div class="data">
+                                <h5 class="mb-0">{{openedAdmin?.firstName}} {{openedAdmin?.lastName}}</h5>
+                            </div>
+                        </div>
+                        <div class="header-info d-flex py-2" *ngIf="!isOpen">
+                            <h5>Select a chat to view info</h5>
+                        </div>
+
+                        <div class="input-chat border-top px-3 py-2 position-absolute bottom-0 z-3 bg-white"
+                            style="left: 0; right: 0;">
+                            <form [formGroup]="sendMessageForm" (ngSubmit)="sendMessage()">
+                                <input type="text" formControlName="content" class="form-control border-0 shadow-none"
+                                    placeholder="Type..." [disabled]="!isOpen">
+                                <button type="submit" class="btn-send btn rounded-circle" [disabled]="!isOpen"><i
+                                        class="fa-solid fa-paper-plane"></i></button>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="messages-area px-3" style="height: 58vh;" *ngIf="isOpen">
+                        <div class="inner h-100 mb-2" *ngIf="openedMessages.length > 0">
+                            <div class="message shadow p-2 mb-2 position-relative"
+                                *ngFor="let message of openedMessages" [ngClass]="message.isSent?'sent':'received'">
+                                <p>{{message?.content}}</p>
+                                <div class="position-absolute bottom-0 end-0 m-2">
+                                    <span class="ms-3">{{getDateOnly(message?.dateTime)}} <i
+                                            class="fa-solid fa-calendar-days ms-2"></i></span>
+                                    <span class="ms-3">{{getTimeOnly(message?.dateTime)}}<i
+                                            class="fa-regular fa-clock ms-2"></i></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="inner h-100" *ngIf="!(openedMessages.length > 0)">
+                            <div class="d-flex align-items-center justify-content-center flex-column h-100">
+                                <img class="w-50" src="./assets/nothing-selected.jpg" alt="">
+                                <h2 class="display-6 text-muted">No Messages Sent yet.</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="no-messages px-3 d-flex justify-content-center align-items-center" style="height: 58vh;"
+                        *ngIf="!isOpen">
+                        <div class="body w-50 text-center">
+                            <img class="w-100" src="./assets/nothing-selected.jpg" alt="">
+                            <h2 class="display-6">No Chat Selected</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

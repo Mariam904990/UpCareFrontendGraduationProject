@@ -1,0 +1,36 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5" *ngIf="data == null">Add Radiology</h1>
+        <h1 class="display-5" *ngIf="data != null">Update Radiology</h1>
+        <form class="example-form" [formGroup]="radiologyDataForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input type="text" formControlName="name" matInput placeholder="Ex. CBC">
+                        <mat-error
+                            *ngIf="radiologyDataForm.get('name')?.getError('required') && radiologyDataForm.get('name')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Price</mat-label>
+                        <input type="number" formControlName="price" matInput placeholder="Ex. 450.00">
+                        <mat-error
+                            *ngIf="radiologyDataForm.get('price')?.getError('required') && radiologyDataForm.get('price')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="radiologyDataForm.get('price')?.getError('min') && radiologyDataForm.get('price')?.touched">
+                            This field minimum value is <strong>1</strong></mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div class="hstack justify-content-end">
+                <button [disabled]="radiologyDataForm.status != 'VALID'" mat-raised-button *ngIf="data == null" color="primary">Add Radiology Data</button>
+
+                <button [disabled]="radiologyDataForm.status != 'VALID'" mat-raised-button *ngIf="data != null" color="warn">Update Radiology Data</button>
+            </div>
+        </form> 
+    </div>
+</section>

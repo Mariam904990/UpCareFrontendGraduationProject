@@ -1,0 +1,60 @@
+h1 {
+    font-size: 2.5rem;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.user-info {
+    .drop {
+        top: 105%;
+        right: 0;
+    }
+}
+
+.emergency {
+    background-color: #fff;
+}
+
+.cell {
+    background-color: #FAFBFD;
+    transition: .3s;
+
+    &:hover {
+        background-color: #F1F5F8;
+    }
+}
+
+.case-mode {
+    background-color: #fff;
+    transition: .3s;
+
+    a {
+        i {
+            color: #3e3e3e;
+        }
+    }
+
+    &:hover {
+        background-color: #2662F0;
+
+        p {
+            color: #FFF !important;
+        }
+        a {
+            i {
+                color: #FFF !important;
+            }
+        }
+    }
+}
+
+.icon {
+    height: 30px;
+    width: 30px;
+}
+
+.chat-div {
+    position: absolute;
+    right: 20px;
+    bottom: 0;
+}

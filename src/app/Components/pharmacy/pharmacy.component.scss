@@ -1,0 +1,50 @@
+h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+}
+
+.user-info {
+  .drop {
+    top: 105%;
+    right: 0;
+  }
+}
+.emergency {
+  background-color: #fff;
+}
+
+.cell {
+  background-color: #fafbfd;
+  transition: 0.3s;
+  &:hover {
+    background-color: #f1f5f8;
+  }
+}
+
+.case-mode {
+  background-color: #2662f0;
+  p {
+    color: #fff !important;
+  }
+}
+
+.case-available {
+  background-color: #ff0000;
+  p {
+    color: #fff !important;
+  }
+}
+
+.case-contact {
+  background-color: #34d1bf;
+  p {
+    color: #fff;
+  }
+}
+.accordion-button:focus {
+  box-shadow: none;
+}
+.accordion-button::after {
+  margin-bottom: 25px;
+}

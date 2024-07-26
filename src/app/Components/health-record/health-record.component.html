@@ -1,0 +1,40 @@
+<section class="p-5">
+    <h1 class="display-5">Patient Health Records</h1>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-7 p-2">
+                <div class="inner h-100 text-center card p-2" *ngIf="show">
+                    <canvasjs-chart [options]="chartOptions"
+                        [styles]="{width: '100%', height: '200px'}"></canvasjs-chart>
+                </div>
+            </div>
+            <div class="col-md-5 p-2">
+                <div style="background-image: linear-gradient(-45deg,#2662f0, #98b7ff);"
+                    class="inner h-100 p-5 card d-flex justify-content-center align-items-center flex-column">
+                    <h2 class="display-5 text-light">{{lastRecord?.heart_rate?.heart_rate || 0}}<sup>bpm</sup></h2>
+                    <p class="m-0 text-light">Last Record For Heart Sensor</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 p-2">
+                <div class="inner h-100 card p-5 d-flex justify-content-center align-items-center flex-column">
+                    <h2 class="display-5">{{lastRecord?.temperature?.temperature || 0}}<sup style="color: #2662F0">o</sup></h2>
+                    <p class="m-0">Last Record For Temperature Sensor</p>
+                </div>
+            </div>
+            <div class="col-md-4 p-2">
+                <div class="inner h-100 card p-5 d-flex justify-content-center align-items-center flex-column">
+                    <h2 class="display-5">{{lastRecord?.spo2?.spo2 || 0}}<sup style="color: #2662F0">%</sup></h2>
+                    <p class="m-0">Last Record Oxygen Saturation</p>
+                </div>
+            </div>
+            <div class="col-md-4 p-2">
+                <div class="inner h-100 card p-5 d-flex justify-content-center align-items-center flex-column">
+                    <h2 class="display-5">{{lastRecord?.humidity?.humidity || 0}}<sup style="color: #2662F0">g.m<sup>-3</sup> </sup></h2>
+                    <p class="m-0">Last Record For Humidity of external environment</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

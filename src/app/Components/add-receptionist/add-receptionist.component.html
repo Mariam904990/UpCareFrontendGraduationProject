@@ -1,0 +1,93 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5">Add Receptionist</h1>
+        <form class="example-form" [formGroup]="receptionistDataForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input type="text" formControlName="firstName" matInput placeholder="Ex. Mustafa">
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('firstName')?.getError('required') && receptionistDataForm.get('firstName')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input type="text" formControlName="lastName" matInput placeholder="Ex. Mohamed">
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('lastName')?.getError('required') && receptionistDataForm.get('lastName')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Phone Number</mat-label>
+                        <input type="text" formControlName="phoneNumber" matInput placeholder="Ex. 01111122212">
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('phoneNumber')?.getError('required') && receptionistDataForm.get('email')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('phoneNumber')?.getError('pattern') && receptionistDataForm.get('phoneNumber')?.touched">
+                            Enter a valid <strong>phone number</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input type="email" formControlName="email" matInput placeholder="Ex. Mustafa@receptionist.com">
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('email')?.getError('required') && receptionistDataForm.get('email')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('email')?.getError('email') && receptionistDataForm.get('email')?.touched">
+                            Enter a valid <strong>email</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Password</mat-label>
+                        <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+                        <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('password')?.getError('required') && receptionistDataForm.get('password')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('password')?.getError('pattern') && receptionistDataForm.get('password')?.touched">
+                            Password must be maximum 6 characters & contains at least one Uppercase letter, one
+                            lowercase letter, number, special character</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Address</mat-label>
+                        <textarea formControlName="address" matInput placeholder="Ex. Banha, City Club..."></textarea>
+                        <mat-error
+                            *ngIf="receptionistDataForm.get('address')?.getError('required') && receptionistDataForm.get('address')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+                        formControlName="gender">
+                        <mat-radio-button value="0">
+                            Male
+                        </mat-radio-button>
+                        <mat-radio-button value="1">
+                            Female
+                        </mat-radio-button>
+                    </mat-radio-group>
+                </div>
+            </div>
+
+            <div class="hstack justify-content-end">
+                <button [disabled]="receptionistDataForm.status != 'VALID'" mat-raised-button color="primary"
+                    (click)="submitForm()">Add Receptionist</button>
+            </div>
+        </form>
+    </div>
+</section>

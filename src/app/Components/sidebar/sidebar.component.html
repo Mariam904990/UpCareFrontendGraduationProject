@@ -1,0 +1,188 @@
+<aside class="w-100">
+    <nav>
+        <div class="brand">
+            <img src="./assets/up-care-logo.png" class="w-75" alt="">
+        </div>
+        <ul class="list-unstyled ms-3">
+            <li class="px-2 mb-2" *ngIf="['admin', 'receptionist'].includes(_AuthService.user?.userRole!)">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/emergency" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer outer-icon d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-microphone-lines"></i>
+                            </div>
+                            <p class="m-0">Emergency</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="_AuthService.user?.userRole == 'admin'">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/dashboard" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-chart-line"></i>
+                            </div>
+                            <p class="m-0">Dashboard</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="_AuthService.user?.userRole == 'doctor'">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/messages" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-regular fa-envelope"></i>
+                            </div>
+                            <p class="m-0">Messages</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="!(['checkupLab', 'radiologyLab'].includes(_AuthService.user?.userRole!))">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/patients" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <p class="m-0">Patients</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="['admin', 'receptionist', 'nurse', 'doctor'].includes(_AuthService.user?.userRole!)">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/rooms" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-bed"></i>
+                            </div>
+                            <p class="m-0">Rooms</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="_AuthService.user?.userRole == 'admin'">
+                <a class="nav-link w-100 d-flex align-items-center position-relative"  (click)="slideToggleStaff()">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner d-flex justify-content-between align-items-center w-100">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-brands fa-medrt"></i>
+                            </div>
+                            <p class="m-0">Staff</p>
+                        </div>
+                        <i class="fa-solid fa-angle-down"></i>
+                    </div>
+                </a>
+                <ul class="optional-list staff-list list-unstyled ms-5" style="display: none;">
+                    <li class="mb-1">
+                        <a class="nav-link d-flex align-items-center" routerLink="/doctors" routerLinkActive="nav-link-acive">
+                            <i class="fa-solid fa-chevron-right me-2" style="font-size: 1.1rem;"></i>
+                            <p class="m-0" style="font-size: 1rem; letter-spacing: 1px;">Doctors</p>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="nav-link d-flex align-items-center" routerLink="/nurses" routerLinkActive="nav-link-acive">
+                            <i class="fa-solid fa-chevron-right me-2" style="font-size: 1.1rem;"></i>
+                            <p class="m-0" style="font-size: 1rem; letter-spacing: 1px;">Nurses</p>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="nav-link d-flex align-items-center" routerLink="/receptionist" routerLinkActive="nav-link-acive">
+                            <i class="fa-solid fa-chevron-right me-2" style="font-size: 1.1rem;"></i>
+                            <p class="m-0" style="font-size: 1rem; letter-spacing: 1px;">Receptionist</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="px-2 mb-2" *ngIf="_AuthService.user?.userRole == 'admin'">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" (click)="slideToggleLabs()">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner d-flex justify-content-between align-items-center w-100">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-vial-virus"></i>
+                            </div>
+                            <p class="m-0">Labs</p>
+                        </div>
+                        <i class="fa-solid fa-angle-down"></i>
+                    </div>
+                </a>
+                <ul class="optional-list staff-list list-unstyled ms-5" style="display: none;">
+                    <li class="mb-1">
+                        <a class="nav-link d-flex align-items-center" routerLink="/checkup-lab" routerLinkActive="nav-link-acive">
+                            <i class="fa-solid fa-chevron-right me-2" style="font-size: 1.1rem;"></i>
+                            <p class="m-0" style="font-size: 1rem; letter-spacing: 1px;">Checkup Lab</p>
+                        </a>
+                    </li>
+                    <li class="mb-1">
+                        <a class="nav-link d-flex align-items-center" routerLink="/radiology-lab" routerLinkActive="nav-link-acive">
+                            <i class="fa-solid fa-chevron-right me-2" style="font-size: 1.1rem;"></i>
+                            <p class="m-0" style="font-size: 1rem; letter-spacing: 1px;">Radiology Lab</p>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="px-2 mb-2" *ngIf="['admin', 'pharmacy'].includes(_AuthService.user?.userRole!)">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/pharmacy" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-staff-snake"></i>
+                            </div>
+                            <p class="m-0">Pharmacy</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="['admin', 'doctor', 'receptionist'].includes(_AuthService.user?.userRole || '')">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/schedule" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-calendar-days"></i>
+                            </div>
+                            <p class="m-0">Schedule</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="_AuthService.user?.userRole == 'admin'">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/bills" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-solid fa-coins"></i>
+                            </div>
+                            <p class="m-0">Bills</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+            <li class="px-2 mb-2" *ngIf="['admin', 'receptionist'].includes(_AuthService.user?.userRole!)">
+                <a class="nav-link w-100 d-flex align-items-center position-relative" routerLink="/reviews" routerLinkActive="nav-link-acive">
+                    <i class="position-absolute fa-solid fa-caret-right"></i>
+                    <div class="link-inner">
+                        <div class="d-flex align-items-center">
+                            <div class="outer d-flex align-items-center justify-content-center me-2">
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <p class="m-0">Reviews</p>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</aside>

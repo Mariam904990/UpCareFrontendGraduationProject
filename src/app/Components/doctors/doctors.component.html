@@ -1,0 +1,258 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="input d-flex align-items-center px-3 py-1 h-100">
+          <i class="fa-solid fa-magnifying-glass pe-3"></i>
+          <input type="search" placeholder="search by doctor name..." class="form-control" [(ngModel)]="searchTerm">
+        </div>
+      </div>
+      <button mat-mini-fab color="primary" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="(doctors | searchForPatient: searchTerm).length > 0">Doctors</h1>
+    <h1 class="mb-3" *ngIf="(doctors | searchForPatient: searchTerm).length == 0">No Doctors Recorded</h1>
+    <div class="row">
+      <div class="col-5">
+        <div class="emergency table-large container-fluid py-3 rounded shadow"
+          *ngIf="(doctors | searchForPatient: searchTerm).length > 0">
+          <div class="cell mx-2 rounded mb-2" *ngFor="let doctor of (doctors | searchForPatient: searchTerm)">
+            <div class="row g-0 py-2 px-2" (click)="selectChat(doctor.id)">
+              <div class="col-8">
+                <div class="inner d-flex">
+                  <img [src]="(doctor?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                    style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+
+                  <div class="data">
+                    <h5 class="mb-0">{{doctor.firstName}} {{doctor.lastName}}</h5>
+                    <p class="text-muted m-0">{{doctor.speciality}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                  <button class="btn-chat btn rounded-pill">Chat <i class="fa-solid fa-angle-right ms-2"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-7" *ngIf="(doctors | searchForPatient: searchTerm).length > 0">
+        <div class="emergency table-large rounded shadow position-relative">
+          <div class="header-chat mb-1 px-3 py-2 border-bottom d-flex">
+            <div class="header-info d-flex" *ngIf="isOpen">
+              <img [src]="(openedDoctor?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+              <div class="data">
+                <h5 class="mb-0">{{openedDoctor?.firstName}} {{openedDoctor?.lastName}}</h5>
+                <p class="text-muted m-0">{{openedDoctor?.speciality}}</p>
+              </div>
+            </div>
+            <div class="header-info d-flex py-2" *ngIf="!isOpen">
+              <h5>Select a chat to view info</h5>
+            </div>
+
+            <div class="input-chat border-top px-3 py-2 position-absolute bottom-0 z-3 bg-white"
+              style="left: 0; right: 0;">
+              <form [formGroup]="sendMessageForm" (ngSubmit)="sendMessage()">
+                <input type="text" formControlName="content" class="form-control border-0 shadow-none"
+                  placeholder="Type..." [disabled]="!isOpen">
+                <button type="submit" class="btn-send btn rounded-circle" [disabled]="!isOpen"><i
+                    class="fa-solid fa-paper-plane"></i></button>
+              </form>
+            </div>
+          </div>
+          <div class="messages-area px-3" style="height: 58vh;" *ngIf="isOpen">
+            <div class="inner h-100" *ngIf="openedMessages.length > 0">
+              <div class="message shadow p-2 mb-2 position-relative" *ngFor="let message of openedMessages"
+                [ngClass]="message.isSent?'sent':'received'">
+                <p>{{message?.content}}</p>
+                <span class="position-absolute bottom-0 end-0 m-2">{{getTimeOnly(message?.dateTime)}}
+                  <!-- {{getDateOnly(message?.dateTime)}} --></span>
+              </div>
+            </div>
+            <div class="inner h-100" *ngIf="!(openedMessages.length > 0)">
+              <div class="d-flex align-items-center justify-content-center flex-column h-100">
+                <img class="w-50" src="./assets/nothing-selected.jpg" alt="">
+                <h2 class="display-6 text-muted">No Messages Sent yet.</h2>
+              </div>
+            </div>
+          </div>
+          <div class="no-messages px-3 d-flex justify-content-center align-items-center" style="height: 58vh;"
+            *ngIf="!isOpen">
+            <div class="body w-50 text-center">
+              <img class="w-100" src="./assets/nothing-selected.jpg" alt="">
+              <h2 class="display-6">No Chat Selected</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-8">
+        <div class="row">
+          <div class="col-10">
+            <div class="input d-flex align-items-center px-3 py-1 h-100">
+              <i class="fa-solid fa-magnifying-glass pe-3"></i>
+              <input type="search" placeholder="search by doctor name..." class="form-control">
+            </div>
+          </div>
+          <div class="col-2 d-flex">
+            <div class="case-contact d-flex align-items-center" style="width: 40px; border-radius: 10px;">
+              <svg width="" height="25" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_166_376)">
+                  <path
+                    d="M5.9375 0.9375C5.9375 0.417969 5.51953 0 5 0C4.48047 0 4.0625 0.417969 4.0625 0.9375V2.5H2.5C1.12109 2.5 0 3.62109 0 5V5.625V7.5V17.5C0 18.8789 1.12109 20 2.5 20H15C16.3789 20 17.5 18.8789 17.5 17.5V7.5V5.625V5C17.5 3.62109 16.3789 2.5 15 2.5H13.4375V0.9375C13.4375 0.417969 13.0195 0 12.5 0C11.9805 0 11.5625 0.417969 11.5625 0.9375V2.5H5.9375V0.9375ZM1.875 7.5H15.625V17.5C15.625 17.8438 15.3438 18.125 15 18.125H2.5C2.15625 18.125 1.875 17.8438 1.875 17.5V7.5ZM8.75 9.0625C8.23047 9.0625 7.8125 9.48047 7.8125 10V11.875H5.9375C5.41797 11.875 5 12.293 5 12.8125C5 13.332 5.41797 13.75 5.9375 13.75H7.8125V15.625C7.8125 16.1445 8.23047 16.5625 8.75 16.5625C9.26953 16.5625 9.6875 16.1445 9.6875 15.625V13.75H11.5625C12.082 13.75 12.5 13.332 12.5 12.8125C12.5 12.293 12.082 11.875 11.5625 11.875H9.6875V10C9.6875 9.48047 9.26953 9.0625 8.75 9.0625Z"
+                    fill="white" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_166_376">
+                    <rect width="17.5" height="20" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+
+            </div>
+            <div class="case-mode ms-4 d-flex align-items-center" style="width: 40px; border-radius: 10px;">
+
+              <svg width="" height="20" viewBox="0 0 19 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#clip0_166_374)">
+                  <path
+                    d="M2.8125 3.75C2.8125 2.75544 3.20759 1.80161 3.91085 1.09835C4.61411 0.395088 5.56794 0 6.5625 0C7.55706 0 8.51089 0.395088 9.21415 1.09835C9.91741 1.80161 10.3125 2.75544 10.3125 3.75C10.3125 4.74456 9.91741 5.69839 9.21415 6.40165C8.51089 7.10491 7.55706 7.5 6.5625 7.5C5.56794 7.5 4.61411 7.10491 3.91085 6.40165C3.20759 5.69839 2.8125 4.74456 2.8125 3.75ZM0 14.1299C0 11.2441 2.33789 8.90625 5.22363 8.90625H7.90137C10.7871 8.90625 13.125 11.2441 13.125 14.1299C13.125 14.6104 12.7354 15 12.2549 15H0.870117C0.389648 15 0 14.6104 0 14.1299ZM14.7656 9.14062V7.26562H12.8906C12.501 7.26562 12.1875 6.95215 12.1875 6.5625C12.1875 6.17285 12.501 5.85938 12.8906 5.85938H14.7656V3.98438C14.7656 3.59473 15.0791 3.28125 15.4688 3.28125C15.8584 3.28125 16.1719 3.59473 16.1719 3.98438V5.85938H18.0469C18.4365 5.85938 18.75 6.17285 18.75 6.5625C18.75 6.95215 18.4365 7.26562 18.0469 7.26562H16.1719V9.14062C16.1719 9.53027 15.8584 9.84375 15.4688 9.84375C15.0791 9.84375 14.7656 9.53027 14.7656 9.14062Z"
+                    fill="white" />
+                </g>
+                <defs>
+                  <clipPath id="clip0_166_374">
+                    <rect width="18.75" height="15" fill="white" />
+                  </clipPath>
+                </defs>
+              </svg>
+
+
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+
+    <h1 class="mb-3">Doctors</h1>
+    <div class=" container-fluid py-3">
+
+      <div class="row d-flex justify-content-around ">
+        <div class="col-4 rounded shadow bg-white">
+          <div *ngFor="let chat of chats" class="row mb-2 cell  py-3" style="cursor: pointer;" (click)="chatDisplay(chat.id)">
+            <div class="col-12">
+              <div class="d-flex">
+                <img src="./assets/user-image.jpeg" style="height: 50px; width: 50px;" class="me-2 rounded overflow-hidden"
+                  alt="">
+                <div class="data">
+                  <div class="d-flex justify-content-between ">
+                    <h5 class="mb-0">{{chat.recepientName}}</h5>
+                    <p class="text-primary">Gastroenterology</p>
+                  </div>
+                  <p class="fw-lighter m-0">Hello {{chat.recepientName}}, emergency in roo...</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+
+
+        <div id="chatDiv" class="col-7 py-3 rounded shadow bg-white" *ngIf="isOpen">
+          <div class="row">
+            <div class="col-12">
+              <div class="top d-flex justify-content-between">
+                <div class="d-flex"><img src="./assets/download.png"
+                    style="height: 50px; width: 50px; border-radius: 10px;" class=" me-2" alt="">
+                  <h5 class="mb-0">{{selectedChat?.recepientName}}</h5>
+                </div>
+                <div class="icon rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 30px; height: 30px; background-color: #0255e3;">
+                  <a class="m-0 cursor-pointer" href="tel:+201091147893"><i
+                      class="fa-solid fa-phone-flip text-white"></i></a>
+                </div>
+              </div>
+              <hr>
+
+              <div class="row my-5">
+                <div class="col-7 p-3 mb-3 ms-3" style="background-color: #0255e3; border-radius: 10px 10px 10px 0px;">
+                  <p class="m-0 text-white">Hello {{selectedChat?.recepientName}},<br>
+                    Emrgency in Room 30. go there quickly</p>
+                </div>
+                <div class="d-flex justify-content-end">
+                  <div class="col-7 p-3"
+                    style="background-color: rgb(232, 228, 228); border-radius: 10px 10px 0px 10px;">
+                    <p class=" m-0">Hello Admin,<br>
+                      I’ll be there in 5 minutes.</p>
+                  </div>
+                </div>
+
+              </div>
+              <hr class="" style="margin-top: 7rem;">
+              <div class="d-flex justify-content-between ms-2">
+                <textarea class="form-control" placeholder="Type something..."
+                  style="resize: none; border: none; box-shadow: none;"></textarea>
+                <p class="m-0" style="cursor: pointer;"><i class="fa-brands fa-telegram fs-2"
+                    style="color: #0255e3;"></i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="!isOpen" id="contnet" class="col-7 py-3 rounded shadow bg-white"   >
+          <div class="row">
+            <div class="col-12">
+              <div  class="top d-flex  justify-content-between">
+                <div class="d-flex"><img src="./assets/download.png"
+                    style="height: 50px; width: 50px; border-radius: 10px;" class=" me-2" alt="">
+                  <h5 class="mb-0">Your Recepint</h5>
+                </div>
+                <div class="icon rounded-circle d-flex align-items-center justify-content-center"
+                  style="width: 30px; height: 30px; background-color: #0255e3;">
+                  <a class="m-0 cursor-pointer" href="tel:+201091147893"><i
+                      class="fa-solid fa-phone-flip text-white"></i></a>
+                </div>
+              </div>
+              <hr>
+
+              <div style="display: flex; justify-content: center; align-items: center; text-align: center;" class="row my-5">
+                <h2>start your chat  by</h2>
+                <h4>Clicking on any conversation</h4>
+              </div>
+              <hr class="" style="margin-top: 7rem;">
+              <div class="d-flex justify-content-between ms-2">
+                <textarea class="form-control" placeholder="Type something..."
+                  style="resize: none; border: none; box-shadow: none;"></textarea>
+                <p class="m-0" style="cursor: pointer;"><i class="fa-brands fa-telegram fs-2"
+                    style="color: #0255e3;"></i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+  </div>
+</section> -->

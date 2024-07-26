@@ -1,0 +1,62 @@
+<section>
+    <div class="container vh-100 d-flex align-items-center justify-content-center">
+        <div class="row justify-content-center">
+            <div class="col-8">
+                <div class="card overflow-hidden">
+                    <div class="row align-items-center">
+                        <div class="col-md-6 d-none d-md-block">
+                            <img src="./assets/login-side.jpeg" class="w-100" alt="">
+                        </div>
+                        <div class="col-12 col-md-6">
+                            <div class="inner h-100 d-flex justify-content-center flex-column pe-3">
+                                <form class="w-100" [formGroup]="loginForm" (ngSubmit)="login()">
+                                    <div class="input-item mb-2">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Email</mat-label>
+                                            <input type="email" formControlName="email" matInput
+                                                placeholder="Ex. pat@example.com">
+                                            <mat-error
+                                                *ngIf="loginForm.get('email')?.getError('email') && loginForm.get('email')?.touched">Please
+                                                enter a valid email address</mat-error>
+                                            <mat-error
+                                                *ngIf="loginForm.get('email')?.getError('required') && loginForm.get('email')?.touched">Email
+                                                is <strong>required</strong></mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="input-item mb-2">
+                                        <mat-form-field class="w-100">
+                                            <mat-label>Enter your password</mat-label>
+                                            <input formControlName="password" matInput
+                                                [type]="hide ? 'password' : 'text'">
+                                            <button type="button" mat-icon-button matSuffix (click)="hide = !hide"
+                                                [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                                                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                                            </button>
+                                            <mat-error
+                                                *ngIf="loginForm.get('password')?.getError('required') && loginForm.get('password')?.touched">Password
+                                                is <strong>required</strong></mat-error>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="input-item mb-2">
+                                        <button mat-flat-button color="primary" class="w-100">Submit</button>
+                                    </div>
+
+                                </form>
+                                <div class="input-item mb-2">
+                                    <p *ngIf="selectedRole">You are sure you are a <span class="text-primary">{{selectedRole}}</span></p>
+                                    <mat-radio-group aria-labelledby="example-radio-group-label"
+                                        class="example-radio-group" [(ngModel)]="selectedRole">
+                                        <mat-radio-button class="w-25" *ngFor="let role of roles" [value]="role">
+                                            {{role}}
+                                        </mat-radio-button>
+                                    </mat-radio-group>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

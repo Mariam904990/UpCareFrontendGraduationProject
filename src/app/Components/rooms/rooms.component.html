@@ -1,0 +1,54 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="input d-flex align-items-center px-3 py-1 h-100">
+          <i class="fa-solid fa-magnifying-glass pe-3"></i>
+          <input type="number" [(ngModel)]="roomNumber" placeholder="search by room number..." class="form-control"
+            style="border: none; outline: none; box-shadow: none;">
+        </div>
+      </div>
+      <button *ngIf="_AuthService.user?.userRole == 'receptionist'" mat-mini-fab color="primary" class="me-2" (click)="addRoom()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="(rooms | searchForRoomNumber:roomNumber).length != 0">Rooms</h1>
+    <h1 class="mb-3" *ngIf="(rooms | searchForRoomNumber:roomNumber).length == 0">No Rooms Data Available</h1>
+    <div class="emergency table-large container-fluid py-3 rounded shadow"
+      *ngIf="(rooms | searchForRoomNumber:roomNumber).length != 0">
+      <div class="row cell mx-2 rounded py-2 mb-2" *ngFor="let room of rooms | searchForRoomNumber: roomNumber">
+        <div class="col-4">
+          <div class="inner d-flex">
+            <button mat-icon-button class="me-2" title="More about room number {{room?.id}}" (click)="openRoomDetails(room)" aria-label="Example icon button with a open in new tab icon">
+              <mat-icon>open_in_new</mat-icon>
+            </button>
+            <div class="data hstack justify-content-center">
+              <h5 class="mb-0">Room No. {{room?.id}}</h5>
+            </div>
+          </div>
+        </div>
+        <div class="col-8">
+          <div class="inner d-flex align-items-center flex-row-reverse h-100">
+            
+            <button *ngIf="_AuthService.user?.userRole == 'receptionsit'" mat-mini-fab color="warn" class="ms-2" (click)="updateRoom(room)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <div class="case-contact ms-2 px-3 py-1 rounded-pill">
+              <p class="m-0">{{room?.pricePerNight | currency:'EGP'}} for night</p>
+            </div>
+            <div class="case-available ms-2 px-3 py-1 rounded-pill">
+              <p class="m-0">{{room?.availableBedsNumber}} Beds Available</p>
+            </div>
+            <div class="case-mode ms-2 px-3 py-1 rounded-pill">
+              <p class="m-0">{{room?.numberOfBeds}} Beds</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

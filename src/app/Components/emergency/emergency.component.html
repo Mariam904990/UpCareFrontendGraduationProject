@@ -1,0 +1,60 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="input d-flex align-items-center px-3 py-1 h-100">
+          <i class="fa-solid fa-magnifying-glass pe-3"></i>
+          <input type="search" placeholder="search by patient name..." class="form-control"
+            [(ngModel)]="patientSearchTerm">
+        </div>
+      </div>
+      <button *ngIf="_AuthService.user?.userRole == 'receptionist'" mat-mini-fab color="primary" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="emergencyList.length == 0">No Emergency Recorded</h1>
+    <h1 class="mb-3" *ngIf="emergencyList.length > 0">Emergency</h1>
+    <div class="emergency table-large container-fluid py-3 rounded shadow" *ngIf="emergencyList.length > 0">
+      <div class="row mb-3 px-2">
+        <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group"
+          [(ngModel)]="selectedType">
+          <mat-radio-button class="example-radio-button" value="all">
+            All
+          </mat-radio-button>
+          <mat-radio-button class="example-radio-button" value="online">
+            Online
+          </mat-radio-button>
+          <mat-radio-button class="example-radio-button" value="offline">
+            Offline
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+      <div class="row cell mx-2 rounded py-3 px-2 mb-2"
+        *ngFor="let case of emergencyList | search:patientSearchTerm:selectedType">
+        <div class="col-8">
+          <div class="inner d-flex">
+            <!-- <img src="./assets/user-image.jpeg" style="height: 50px;" class="rounded me-2" alt=""> -->
+            <div class="data">
+              <h5 class="mb-0">{{case?.patient?.firstName}} {{case?.patient?.lastName}}</h5>
+              <p class="text-muted m-0" *ngIf="calculateAge(case?.dateTime) > 0">{{calculateAge(case?.dateTime)}} Years
+                old</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-4">
+          <div class="inner d-flex align-items-center flex-row-reverse h-100">
+            <div class="case-contact ms-2 px-5 py-1 rounded-pill" *ngIf="case?.type == 3">
+              <p class="m-0">Online</p>
+            </div>
+            <div class="case-mode ms-2 px-5 py-1 rounded-pill" *ngIf="case?.type == 4">
+              <p class="m-0">Offline</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

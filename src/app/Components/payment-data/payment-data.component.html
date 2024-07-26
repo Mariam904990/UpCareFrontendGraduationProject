@@ -1,0 +1,59 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5">Complete Payment Process</h1>
+        <form class="example-form" [formGroup]="cardDataForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Name On Card</mat-label>
+                        <input type="text" formControlName="nameOnCard" matInput placeholder="Ex. Fawaz">
+                        <mat-error
+                            *ngIf="cardDataForm.get('nameOnCard')?.getError('required') && cardDataForm.get('nameOnCard')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Card Number</mat-label>
+                        <input type="text" formControlName="cardNumber" matInput placeholder="Enter Your Card Number...">
+                        <mat-error
+                            *ngIf="cardDataForm.get('cardNumber')?.getError('required') && cardDataForm.get('cardNumber')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="cardDataForm.get('cardNumber')?.getError('pattern') && cardDataForm.get('cardNumber')?.touched">
+                            Enter a valid <strong>Card Number</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>CVC</mat-label>
+                        <input type="text" formControlName="CVC" matInput
+                            placeholder="Enter CVC in the back of your card">
+                        <mat-error
+                            *ngIf="cardDataForm.get('CVC')?.getError('required') && cardDataForm.get('CVC')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-2 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>EXP</mat-label>
+                        <input type="text" formControlName="EXP" matInput
+                            placeholder="MM/YY">
+                        <mat-error
+                            *ngIf="cardDataForm.get('EXP')?.getError('required') && cardDataForm.get('EXP')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="cardDataForm.get('EXP')?.getError('pattern') && cardDataForm.get('EXP')?.touched">
+                            Required 2 digits then character '/' then 2 digits like: <strong>02/30</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-2">
+                    <div class="hstack justify-content-end">
+
+                        <button type="submit" [disabled]="cardDataForm.status == 'INVALID'" mat-raised-button color="primary">Complete Payment</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>

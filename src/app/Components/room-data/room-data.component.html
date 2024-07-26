@@ -1,0 +1,36 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5" *ngIf="data == null">Add Room</h1>
+        <h1 class="display-5" *ngIf="data != null">Update Room</h1>
+        <form class="example-form" [formGroup]="roomForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Number Of Beds</mat-label>
+                        <input type="number" formControlName="numberOfBeds" matInput placeholder="Ex. 6">
+                        <mat-error
+                            *ngIf="roomForm.get('numberOfBeds')?.getError('required') && roomForm.get('numberOfBeds')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-12 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Price Per Night</mat-label>
+                        <input type="number" formControlName="pricePerNight" matInput placeholder="Ex. 450.00">
+                        <mat-error
+                            *ngIf="roomForm.get('pricePerNight')?.getError('required') && roomForm.get('pricePerNight')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="hstack justify-content-end">
+                <button [disabled]="roomForm.status != 'VALID'" mat-raised-button *ngIf="data == null" color="primary" 
+                    (click)="submitForm()">Add Room Data</button>
+
+                <button [disabled]="roomForm.status != 'VALID'" mat-raised-button *ngIf="data != null" color="warn"
+                    (click)="submitForm()">Update Room Data</button>
+            </div>
+        </form>
+    </div>
+</section>

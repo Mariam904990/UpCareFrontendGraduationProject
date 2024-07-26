@@ -1,0 +1,114 @@
+<section>
+  <div class="container-fluid">
+    <div class="header row my-2"
+      [ngClass]="_AuthService.user?.userRole == 'doctor'?'justify-content-end':'justify-content-between'">
+      <div class="col-9" *ngIf="_AuthService.user?.userRole != 'doctor'">
+        <div class="row">
+          <div class="col-12">
+            <div class="input d-flex align-items-center px-3 py-1 h-100">
+              <i class="fa-solid fa-magnifying-glass pe-3"></i>
+              <input type="search" [(ngModel)]="searchTerm" placeholder="search by doctor name..." class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3">Schedule</h1>
+    <div class=" container-fluid py-3">
+      <div class="row">
+        <div class="col-5" *ngIf="['admin', 'receptionist'].includes(_AuthService.user?.userRole!)">
+          <div class="emergency table-large container-fluid py-3 rounded shadow">
+            <div class="cell mx-2 rounded mb-2" *ngFor="let doctor of doctors | searchForPatient:searchTerm">
+              <div class="row g-0 py-2 px-2" (click)="selectDoctorSchedule(doctor?.id)">
+                <div class="col-8">
+                  <div class="inner d-flex">
+                    <img [src]="(doctor?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                      style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                    <div class="data">
+                      <h5 class="mb-0">{{doctor?.firstName}} {{doctor?.lastName}}</h5>
+                      <p class="text-muted m-0">{{doctor?.speciality}}</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                    <button class="btn-chat btn rounded-pill">Schedule <i
+                        class="fa-solid fa-angle-right ms-2"></i></button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="(['admin', 'receptionist'].includes(_AuthService.user?.userRole!))?'col-7':'col-12'">
+          <div class="emergency table-large rounded shadow">
+            <div class="main-header p-2 border-bottom" *ngIf="_AuthService.user?.userRole != 'doctor'">
+              <div class="container-fluid">
+                <div class="d-flex" *ngIf="isOpen">
+                  <img [src]="(selectedDoctor?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                    style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                  <div class="info">
+                    <h5 class="m-0">{{selectedDoctor?.firstName}} {{selectedDoctor?.lastName}}</h5>
+                    <p class="text-muted m-0">{{selectedDoctor?.speciality}}</p>
+                  </div>
+                </div>
+                <div class="d-flex" *ngIf="!isOpen">
+                  <div class="info">
+                    <h5 class="mt-2 mb-3">Select Doctor To View Schedule</h5>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="content position-relative">
+              <div class="table-header p-3 row g-0 justify-content-between align-items-center"
+                *ngIf="isOpen && openedSchedule.length != 0">
+                <div class="col-4 border-end">Patient</div>
+                <div class="col-2 border-end">Date</div>
+                <div class="col-2 border-end">Time</div>
+                <div class="col-3">Type</div>
+              </div>
+              <div class="messages px-3" style="height: 58vh;" *ngIf="isOpen && openedSchedule.length != 0">
+                <div class="cell rounded mb-2" *ngFor="let item of openedSchedule">
+                  <div class="row g-0 align-items-center justify-content-between p-2 cursor-pointer"
+                    (click)="viewPatientProfile(item?.patient?.id)" title="Click To View Patient Profile">
+                    <div class="col-4">
+                      <div class="d-flex">
+                        <img
+                          [src]="(item?.patient?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                          style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                        <div class="info">
+                          <h5 class="m-0">{{item?.patient?.firstName}} {{item?.patient?.lastName}}</h5>
+                          <p class="m-0 text-muted">{{calculateAge(item?.patient?.dateOfBirth)}} Years old</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-2">{{getDateOnly(item?.dateTime)}}</div>
+                    <div class="col-2">{{getTimeOnly(item?.dateTime)}}</div>
+                    <div class="col-3">
+                      <p class="reservation-type m-0 small rounded-pill p-1">{{item?.type}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="no-messages px-3 d-flex justify-content-center align-items-center" style="height: 58vh;"
+                *ngIf="(!isOpen) || openedSchedule?.length == 0">
+                <div class="body w-50 text-center">
+                  <img class="w-50" src="./assets/nothing-selected.jpg" alt="">
+                  <h2 class="display-6"
+                    *ngIf="(isOpen && (openedSchedule?.length == 0)) || _AuthService.user?.userRole == 'doctor'">No
+                    Reservations Recorded</h2>
+                  <h2 class="display-6" *ngIf="(!isOpen) && _AuthService.user?.userRole != 'doctor'">No Doctor Selected
+                  </h2>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,176 @@
+<section>
+    <div class="container-fluid py-3">
+        <div class="header row justify-content-between mb-3">
+            <div class="col-9">
+                <div class="d-flex align-items-center px-3 py-1 h-100">
+                    <h5 class="m-0 me-5">Navigate to:</h5>
+                    <a routerLink="/patients" class="me-4 text-muted">| Patient</a>
+                    <a routerLink="/rooms" class="me-4 text-muted">| Rooms</a>
+                    <a routerLink="/pharmacy" class="me-4 text-muted">| Pharmacy</a>
+                    <a routerLink="/schedule" class="me-4 text-muted">| Schedule</a>
+                    <a routerLink="/bills" class="me-4 text-muted">| Bills</a>
+                    <a routerLink="/reviews" class="me-4 text-muted">| Reviews</a>
+                </div>
+            </div>
+            <div class="col-2">
+                <app-logged-user></app-logged-user>
+            </div>
+        </div>
+        <h1 class="mb-3">Dashboard</h1>
+        <div class="row mb-2">
+            <div class="col-4 px-2 mb-2 h-auto">
+                <div class="inner card p-3 h-100">
+                    <div class="head">
+                        <h3 class="mb-3">Specializations</h3>
+                    </div>
+                    <div class="content">
+                        <div class="row g-0">
+                            <div class="col-3 h-auto">
+                                <div
+                                    class="icon-specialization rounded d-flex justify-content-center align-items-center h-100 p-3">
+                                    <i class="fa-solid fa-stethoscope display-3"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 offset-1">
+                                <owl-carousel-o [options]="specializationsOptions">
+                                    <ng-container *ngFor="let speciality of specialities">
+                                        <ng-template carouselSlide [id]="speciality.speciality">
+                                            <div class="inner">
+                                                <h5>{{speciality.speciality}}</h5>
+                                                <p style="color: #2662F0;">{{speciality.doctorWithSPeciality}} Doctors
+                                                </p>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+                                </owl-carousel-o>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 px-2 mb-2 h-auto">
+                <div class="inner card p-3 h-100">
+                    <div class="head">
+                        <h3 class="mb-3">Checkup tests</h3>
+                    </div>
+                    <div class="content">
+                        <div class="row g-0">
+                            <div class="col-3 h-auto">
+                                <div
+                                    class="icon-checkup rounded d-flex justify-content-center align-items-center h-100 p-3">
+                                    <i class="fa-solid fa-vial-circle-check display-3"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 offset-1">
+                                <owl-carousel-o [options]="specializationsOptions">
+                                    <ng-container *ngFor="let checkup of checkupAvailable">
+                                        <ng-template carouselSlide [id]="checkup.id+''">
+                                            <div class="inner">
+                                                <h5>{{checkup.name}}</h5>
+                                                <p style="color: #2662F0;">{{checkup.price|currency: 'EGP'}}</p>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+                                </owl-carousel-o>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-4 px-2 mb-2 h-auto">
+                <div class="inner card p-3 h-100">
+                    <div class="head">
+                        <h3 class="mb-3">Radiology tests</h3>
+                    </div>
+                    <div class="content">
+                        <div class="row g-0">
+                            <div class="col-3 h-auto">
+                                <div
+                                    class="icon-radiology rounded d-flex justify-content-center align-items-center h-100 p-3">
+                                    <i class="fa-solid fa-brain display-3"></i>
+                                </div>
+                            </div>
+                            <div class="col-6 offset-1">
+                                <owl-carousel-o [options]="specializationsOptions">
+                                    <ng-container *ngFor="let rad of radiologyAvailable">
+                                        <ng-template carouselSlide [id]="rad.id+''">
+                                            <div class="inner">
+                                                <h5>{{rad.name}}</h5>
+                                                <p style="color: #2662F0;">{{rad.price|currency: 'EGP'}}</p>
+                                            </div>
+                                        </ng-template>
+                                    </ng-container>
+                                </owl-carousel-o>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-5 px-2 mb-2">
+                <div class="card table-small rounded shadow p-3">
+                    <div class="head d-flex justify-content-between align-items-center mb-2">
+                        <h3 *ngIf="!(services?.length == 0)">Recent Services</h3>
+                        <h3 *ngIf="services?.length == 0">No Recent Bills Exists</h3>
+                        <a *ngIf="!(services?.length == 0)" class="text-muted text-decoration-none"
+                            routerLink="/bills">View Bills<i class="fa-solid fa-chevron-right ms-2"></i></a>
+                    </div>
+
+                    <div class="row cell mx-2 rounded py-2 mb-2" *ngFor="let bill of services">
+                        <div class="col-7">
+                            <div class="inner d-flex">
+                                <img [src]="(bill?.payor?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                                    style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                                <div class="data">
+                                    <h5 class="mb-0">{{bill?.payor?.firstName}} {{bill?.payor?.lastName}}</h5>
+                                    <p class="text-muted m-0">{{bill?.deliveredService}}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="inner d-flex align-items-center flex-column h-100">
+                                <p class="m-0 ms-auto ">{{bill?.paidMoney}} <span style="color: #34D1BF;">EGP</span></p>
+
+                                <p class="m-0 ms-auto small" *ngIf="getDateOnly() == getDateOnly(bill?.dateTime)">
+                                    {{getTimeOnly(bill?.dateTime)}} <i class="fa-regular fa-clock text-muted"></i></p>
+                                <p class="m-0 ms-auto small" *ngIf="getDateOnly() != getDateOnly(bill?.dateTime)">
+                                    {{getDateOnly(bill?.dateTime)}} {{getTimeOnly(bill?.dateTime)}} <i
+                                        class="fa-regular fa-clock text-muted"></i></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-7">
+                <div class="card table-small rounded shadow p-3">
+                    <div class="head d-flex justify-content-between align-items-center mb-2">
+                        <h3 *ngIf="feedbacks.length > 0">Recent Feedbacks</h3>
+                        <h3 *ngIf="!(feedbacks.length > 0)">No Feedback Exists</h3>
+                        <a *ngIf="feedbacks.length > 0" class="text-muted text-decoration-none"
+                            routerLink="/reviews">View feedbacks<i class="fa-solid fa-chevron-right ms-2"></i></a>
+                    </div>
+                    <div class="row cell mx-2 rounded py-2 mb-2" *ngFor="let feedback of feedbacks">
+                        <div class="col-1">
+                            <img [src]="(feedback?.patient?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                                style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                        </div>
+                        <div class="col-11">
+                            <div class="inner d-flex m-auto w-100">
+                                <div class="data w-100 text-truncate">
+                                    <div class="head d-flex justify-content-between">
+                                        <h5 class="mb-0">{{feedback?.patient?.firstName}}
+                                            {{feedback?.patient?.lastName}}</h5>
+                                        <p class="m-0">Rating: {{feedback?.rate}}</p>
+                                    </div>
+                                    <p class="text-muted m-0 text-nowrap text-truncate">{{feedback?.comment}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

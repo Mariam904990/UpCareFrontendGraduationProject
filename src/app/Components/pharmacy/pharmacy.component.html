@@ -1,0 +1,416 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="input d-flex align-items-center px-3 py-1 h-100">
+          <i class="fa-solid fa-magnifying-glass pe-3"></i>
+          <input type="search" [(ngModel)]="searchTerm" placeholder="search by medicine name or category..."
+            class="form-control" style="border: none; outline: none; box-shadow: none;">
+        </div>
+      </div>
+      <button mat-mini-fab color="primary" class="me-2" (click)="openDialog()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="(medicineList | searchMedicine:searchTerm).length != 0">Pharmacy</h1>
+    <h1 class="mb-3" *ngIf="(medicineList | searchMedicine:searchTerm).length == 0">No Pharmacy Data Available</h1>
+    <div class="row">
+      <div class="col-6">
+        <div class="emergency table-large container-fluid py-3 rounded shadow"
+          *ngIf="(medicineList | searchMedicine:searchTerm).length != 0">
+          <h3 class="my-3">Pharmacy Storage</h3>
+          <div class="row cell mx-2 rounded py-3 mb-2"
+            *ngFor="let medicine of medicineList | searchMedicine: searchTerm">
+            <div class="col-4">
+              <div class="inner h-100 d-flex align-items-center">
+                <div class="data">
+                  <h5 class="h3 mb-0">{{medicine?.name}}</h5>
+                </div>
+              </div>
+            </div>
+            <div class="col-8">
+              <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                <div class="case-contact ms-2 px-3 py-1 rounded-pill">
+                  <p class="m-0">{{medicine?.price | currency:'EGP'}}</p>
+                </div>
+                <div class="case-mode ms-2 px-3 py-1 rounded-pill">
+                  <p class="m-0">{{medicine?.quantity}} items</p>
+                </div>
+                <div class="case-available ms-2 px-3 py-1 rounded-pill">
+                  <p class="m-0">{{medicine?.category}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="emergency table-large container-fluid py-3 rounded shadow">
+          <div class="header my-3 d-flex justify-content-between pe-3">
+            <h3 *ngIf="(shortageList | searchMedicine:searchTerm).length != 0">Pharmacy Shortage</h3>
+            <h3 *ngIf="(shortageList | searchMedicine:searchTerm).length == 0">No Shortage Found</h3>
+            <mat-slider class="example-margin" [max]="max" [min]="min" [step]="step" [discrete]="thumbLabel" #slider
+            (change)="onSliderChange($event)">
+              <input matSliderThumb [(ngModel)]="value">
+            </mat-slider>
+          </div>
+          <div *ngIf="(shortageList | searchMedicine:searchTerm).length != 0">
+            <div class="row cell mx-2 rounded py-3 mb-2"
+              *ngFor="let medicine of shortageList | searchMedicine: searchTerm">
+              <div class="col-4">
+                <div class="inner h-100 d-flex align-items-center">
+                  <div class="data">
+                    <h5 class="h3 mb-0">{{medicine?.name}}</h5>
+                  </div>
+                </div>
+              </div>
+              <div class="col-8">
+                <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                  <button mat-mini-fab color="warn" class="ms-2" (click)="updateMedicine(medicine)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <div class="case-contact ms-2 px-3 py-1 rounded-pill">
+                    <p class="m-0">{{medicine?.price | currency:'EGP'}}</p>
+                  </div>
+                  <div class="case-available ms-2 px-3 py-1 rounded-pill">
+                    <p class="m-0">{{medicine?.quantity}} Items left</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+
+<!-- <section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-8">
+        <div class="row">
+          <div class="col-10">
+            <div class="input d-flex align-items-center px-3 py-1 h-100">
+              <i class="fa-solid fa-magnifying-glass pe-3"></i>
+              <input type="search" placeholder="search by medicine name..." class="form-control">
+            </div>
+          </div>
+          <div class="col-2 d-flex">
+
+            <div class="case-mode ms-4 d-flex align-items-center" style="width: 40px; border-radius: 10px;">
+              <svg width="" height="25" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path
+                  d="M3.75 13.75V3.75C3.75 2.37109 4.87109 1.25 6.25 1.25H16.25C17.6289 1.25 18.75 2.37109 18.75 3.75V11.4648C18.75 12.1289 18.4883 12.7656 18.0195 13.2344L15.7344 15.5195C15.2656 15.9883 14.6289 16.25 13.9648 16.25H6.25C4.87109 16.25 3.75 15.1289 3.75 13.75ZM10.625 5C10.2812 5 10 5.28125 10 5.625V7.5H8.125C7.78125 7.5 7.5 7.78125 7.5 8.125V9.375C7.5 9.71875 7.78125 10 8.125 10H10V11.875C10 12.2188 10.2812 12.5 10.625 12.5H11.875C12.2188 12.5 12.5 12.2188 12.5 11.875V10H14.375C14.7188 10 15 9.71875 15 9.375V8.125C15 7.78125 14.7188 7.5 14.375 7.5H12.5V5.625C12.5 5.28125 12.2188 5 11.875 5H10.625ZM11.5625 18.125C12.082 18.125 12.5 18.543 12.5 19.0625C12.5 19.582 12.082 20 11.5625 20H5.3125C2.37891 20 0 17.6211 0 14.6875V5.9375C0 5.41797 0.417969 5 0.9375 5C1.45703 5 1.875 5.41797 1.875 5.9375V14.6875C1.875 16.5859 3.41406 18.125 5.3125 18.125H11.5625Z"
+                  fill="white" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3">Pharmacy</h1>
+    <div class=" container-fluid py-3 ">
+
+      <div class="row d-flex justify-content-between">
+        <div class="col-4 bg-white rounded shadow p-3">
+          <h3>Pharmacy storage</h3>
+          <div class="row d-flex cell mb-2 py-3 rounded">
+            <div class="col-3 ">
+              <h5 class="m-0 ">Perafine</h5>
+            </div>
+            <div class="col-8 d-flex justify-content-end p-0 ">
+              <div class="case-contact px-3 rounded-pill">
+                <p class="m-0">100 items</p>
+              </div>
+              <div class="case-mode ms-2 px-3 rounded-pill">
+                <p class="m-0">Details</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row d-flex cell mb-2 py-3 rounded">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8 d-flex justify-content-end p-0 ">
+              <div class="case-contact px-3 rounded-pill">
+                <p class="m-0">100 items</p>
+              </div>
+              <div class="case-mode ms-2 px-3 rounded-pill">
+                <p class="m-0">Details</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row d-flex cell mb-2 py-3 rounded">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8 d-flex justify-content-end p-0 ">
+              <div class="case-contact px-3 rounded-pill">
+                <p class="m-0">100 items</p>
+              </div>
+              <div class="case-mode ms-2 px-3 rounded-pill">
+                <p class="m-0">Details</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row d-flex cell mb-2 py-3 rounded">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8 d-flex justify-content-end p-0 ">
+              <div class="case-contact px-3 rounded-pill">
+                <p class="m-0">100 items</p>
+              </div>
+              <div class="case-mode ms-2 px-3 rounded-pill">
+                <p class="m-0">Details</p>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="row d-flex cell mb-2 py-3 rounded">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8 d-flex justify-content-end p-0 ">
+              <div class="case-contact px-3 rounded-pill">
+                <p class="m-0">100 items</p>
+              </div>
+              <div class="case-mode ms-2 px-3 rounded-pill">
+                <p class="m-0">Details</p>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+        <div class="col-3 bg-white rounded shadow p-3 rounded">
+          <h3>Recent Dispensing</h3>
+
+          <div class="accordion accordion-flush mt-3" id="accordionFlushExample">
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                  <div class="row" style="cursor: pointer;">
+                    <div class="col-12">
+                      <div class="d-flex">
+                        <img src="./assets/download.png" style="height: 70px; width: 30px; border-radius: 10px;"
+                          class=" me-2" alt="">
+                        <div class="data">
+                          <div class="d-flex mb-2">
+                            <h5 class="mb-0">Dr. Mohamed</h5>
+                          </div>
+                          <div class="d-flex">
+                            <p class=" text-primary m-0">115 EGP</p>
+                            <p class="m-0 ps-4">10/2/2024</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </h2>
+              <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="row d-flex justify-content-between">
+                    <div class=" col-6">
+                      <p class="">Panadol</p>
+                      <p class="">Pirafine</p>
+                      <p class="">Total</p>
+                    </div>
+                    <div class="col-6">
+                      <div class="d-flex flex-column justify-content-end align-items-end">
+                        <p style="color: #34D1BF;">60 EGP</p>
+                        <p style="color: #34D1BF;">60 EGP</p>
+                        <p style="color: #34D1BF;">120 EGP</p>
+                        <div class="case-mode px-3 rounded-pill" style="width: 8.5rem;">
+                          <p class="m-0"><a class="text-white" routerLink="/patients/123"><span>Patient
+                                Profile</span></a></p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class=" accordion-item">
+              <h2 class="accordion-header" id="flush-headingTwo">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                  <div class="row" style="cursor: pointer;">
+                    <div class="col-12">
+                      <div class="d-flex">
+                        <img src="./assets/download.png" style="height: 70px; width: 30px; border-radius: 10px;"
+                          class=" me-2" alt="">
+                        <div class="data">
+                          <div class="d-flex mb-2">
+                            <h5 class="mb-0">Dr. Mohamed</h5>
+                          </div>
+                          <div class="d-flex">
+                            <p class=" text-primary m-0">115 EGP</p>
+                            <p class="m-0 ps-4">10/2/2024</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </h2>
+              <div id="flush-collapseTwo" class="accordion-collapse collapse" aria-labelledby="flush-headingTwo"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="row d-flex justify-content-between">
+                    <div class=" col-6">
+                      <p class="">Panadol</p>
+                      <p class="">Pirafine</p>
+                      <p class="">Total</p>
+                    </div>
+                    <div class="col-6">
+                      <div class="d-flex flex-column justify-content-end align-items-end">
+                        <p style="color: #34D1BF;">60 EGP</p>
+                        <p style="color: #34D1BF;">60 EGP</p>
+                        <p style="color: #34D1BF;">120 EGP</p>
+                        <div class="case-mode px-3 rounded-pill" style="width: 8.5rem;">
+                          <p class="m-0"><a class="text-white" routerLink="/patients/123"><span>Patient
+                                Profile</span></a></p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="accordion-item">
+              <h2 class="accordion-header" id="flush-headingThree">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                  <div class="row" style="cursor: pointer;">
+                    <div class="col-12">
+                      <div class="d-flex">
+                        <img src="./assets/download.png" style="height: 70px; width: 30px; border-radius: 10px;"
+                          class=" me-2" alt="">
+                        <div class="data">
+                          <div class="d-flex mb-2">
+                            <h5 class="mb-0">Dr. Mohamed</h5>
+                          </div>
+                          <div class="d-flex">
+                            <p class=" text-primary m-0">115 EGP</p>
+                            <p class="m-0 ps-4">10/2/2024</p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+              </h2>
+              <div id="flush-collapseThree" class="accordion-collapse collapse" aria-labelledby="flush-headingThree"
+                data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                  <div class="row d-flex justify-content-between">
+                    <div class=" col-6">
+                      <p class="">Panadol</p>
+                      <p class="">Pirafine</p>
+                      <p class="">Total</p>
+                    </div>
+                    <div class="col-6">
+                      <div class="d-flex flex-column justify-content-end align-items-end">
+                        <p style="color: #34D1BF;">60 EGP</p>
+                        <p style="color: #34D1BF;">60 EGP</p>
+                        <p style="color: #34D1BF;">120 EGP</p>
+                        <div class="case-mode px-3 rounded-pill" style="width: 8.5rem;">
+                          <p class="m-0"><a class="text-white" routerLink="/patients/123"><span>Patient
+                                Profile</span></a></p>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+
+
+        <div class="col-4 bg-white rounded shadow p-3">
+          <h3>Shortage</h3>
+
+          <div class="row d-flex cell mb-2 py-3">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8  d-flex justify-content-end p-0 ">
+              <div class="case-available px-3 rounded-pill">
+                <p class="m-0">20 items left</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex cell mb-2 py-3">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8  d-flex justify-content-end p-0 ">
+              <div class="case-available px-3 rounded-pill">
+                <p class="m-0">20 items left</p>
+              </div>
+            </div>
+          </div>
+          <div class="row d-flex cell mb-2 py-3">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8  d-flex justify-content-end p-0 ">
+              <div class="case-available px-3 rounded-pill">
+                <p class="m-0">20 items left</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="row d-flex cell mb-2 py-3">
+            <div class="col-3">
+              <h5 class="m-0">Perafine</h5>
+            </div>
+            <div class="col-8  d-flex justify-content-end p-0 ">
+              <div class="case-available px-3 rounded-pill">
+                <p class="m-0">20 items left</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+    </div>
+
+  </div>
+</section>  -->

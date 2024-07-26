@@ -1,0 +1,130 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5">Add Doctor</h1>
+        <form class="example-form" [formGroup]="doctorDataForm" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>First Name</mat-label>
+                        <input type="text" formControlName="firstName" matInput placeholder="Ex. Mustafa">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('firstName')?.getError('required') && doctorDataForm.get('firstName')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Last Name</mat-label>
+                        <input type="text" formControlName="lastName" matInput placeholder="Ex. Mohamed">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('lastName')?.getError('required') && doctorDataForm.get('lastName')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Speciality</mat-label>
+                        <input type="text" formControlName="speciality" matInput placeholder="Ex. Mohamed">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('speciality')?.getError('required') && doctorDataForm.get('speciality')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Phone Number</mat-label>
+                        <input type="text" formControlName="phoneNumber" matInput placeholder="Ex. 01111122212">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('phoneNumber')?.getError('required') && doctorDataForm.get('phoneNumber')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="doctorDataForm.get('phoneNumber')?.getError('pattern') && doctorDataForm.get('phoneNumber')?.touched">
+                            Enter a valid <strong>phone number</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Consultation Price</mat-label>
+                        <input type="number" step="0.5" formControlName="consultationPrice" matInput placeholder="Ex. 1~500">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('consultationPrice')?.getError('required') && doctorDataForm.get('consultationPrice')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="(doctorDataForm.get('consultationPrice')?.getError('min') || doctorDataForm.get('consultationPrice')?.getError('max')) && doctorDataForm.get('consultationPrice')?.touched">
+                            Enter a value between <strong>1 and 500</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-4 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Appointment Price</mat-label>
+                        <input type="number" step="0.5" formControlName="appointmentPrice" matInput placeholder="Ex. 1~500">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('appointmentPrice')?.getError('required') && doctorDataForm.get('appointmentPrice')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="(doctorDataForm.get('appointmentPrice')?.getError('min') || doctorDataForm.get('appointmentPrice')?.getError('max')) && doctorDataForm.get('appointmentPrice')?.touched">
+                            Enter a value between <strong>1 and 500</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Email</mat-label>
+                        <input type="email" formControlName="email" matInput placeholder="Ex. Mustafa@nurse.com">
+                        <mat-error
+                            *ngIf="doctorDataForm.get('email')?.getError('required') && doctorDataForm.get('email')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="doctorDataForm.get('email')?.getError('email') && doctorDataForm.get('email')?.touched">
+                            Enter a valid <strong>email</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field appearance="outline" class="w-100">
+                        <mat-label>Password</mat-label>
+                        <input formControlName="password" matInput [type]="hide ? 'password' : 'text'">
+                        <button type="button" mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'"
+                            [attr.aria-pressed]="hide">
+                            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                        </button>
+                        <mat-error
+                            *ngIf="doctorDataForm.get('password')?.getError('required') && doctorDataForm.get('password')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="doctorDataForm.get('password')?.getError('pattern') && doctorDataForm.get('password')?.touched">
+                            Password must be maximum 6 characters & contains at least one Uppercase letter, one
+                            lowercase letter, number, special character</mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Address</mat-label>
+                        <textarea formControlName="address" matInput placeholder="Ex. Banha, City Club..."></textarea>
+                        <mat-error
+                            *ngIf="doctorDataForm.get('address')?.getError('required') && doctorDataForm.get('address')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6">
+                    <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group mb-2"
+                        formControlName="gender">
+                        <mat-radio-button value="0">
+                            Male
+                        </mat-radio-button>
+                        <mat-radio-button value="1">
+                            Female
+                        </mat-radio-button>
+                        <mat-error
+                            *ngIf="doctorDataForm.get('gender')?.getError('required') && doctorDataForm.get('gender')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-radio-group>
+                    <p><mat-checkbox formControlName="isSurgeon">Surgeon</mat-checkbox></p>
+                </div>
+            </div>
+
+            <div class="hstack justify-content-end">
+                <button [disabled]="doctorDataForm.status != 'VALID'" mat-raised-button color="primary">Add
+                    Doctor</button>
+            </div>
+        </form>
+    </div>
+</section>

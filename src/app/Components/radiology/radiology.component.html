@@ -1,0 +1,109 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-8">
+        <div class="row">
+          <div class="col-10">
+            <div class="input d-flex align-items-center px-3 py-1 h-100">
+              <i class="fa-solid fa-magnifying-glass pe-3"></i>
+              <input type="search" [(ngModel)]="searchTerm" placeholder="search by radiology name..." class="form-control">
+            </div>
+          </div>
+        </div>
+      </div>
+      <button mat-mini-fab color="primary" aria-label="Example icon button with a menu icon" (click)="add()">
+        <mat-icon>add</mat-icon>
+      </button>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="(radiologyList | checkupSearch: searchTerm).length != 0">Checkup Tests</h1>
+    <h1 class="mb-3" *ngIf="(radiologyList | checkupSearch: searchTerm).length == 0">No Checkup Recorded</h1>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-5">
+          <div class="emergency table-large container-fluid py-3 rounded shadow" *ngIf="radiologyList.length != 0">
+            <div class="cell mx-2 rounded px-2 py-3 mb-2" *ngFor="let checkup of radiologyList | checkupSearch: searchTerm">
+              <div class="inner d-flex justify-content-between align-items-center">
+                <div class="data">
+                  <h5 class="mb-0">{{checkup?.name}}</h5>
+                </div>
+                <div class="d-flex">
+                  <div
+                    class="case-contact me-2 px-3 py-1 rounded-pill d-flex align-items-center justify-content-center">
+                    <p class="m-0">{{checkup?.price|currency:'EGP'}}</p>
+                  </div>
+                  <button class="me-2" mat-mini-fab color="warn"
+                    aria-label="Example icon button with a filter list icon" (click)="edit(checkup)">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button class="me-2" mat-mini-fab color="danger"
+                    aria-label="Example icon button with a filter list icon" (click)="delete(checkup.id)">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-7">
+          <div class="emergency table-large container-fluid py-3 rounded shadow">
+            <div class="head d-flex justify-content-between align-items-center mb-2">
+              <h3 *ngIf="!(radiologyListToDo?.length == 0)">Patients with radiologies to do</h3>
+              <h3 *ngIf="radiologyListToDo?.length == 0">No Radiologies to do</h3>
+            </div>
+            <div class="row cell mx-2 rounded py-2 mb-2" *ngFor="let patientCheckup of radiologyListToDo; let index = index">
+              <div class="col-12">
+                <div class="according" id="accordingExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header">
+                      <button title="Click to expand" class="accordion-button" type="button" data-bs-toggle="collapse"
+                        [attr.data-bs-target]="'#'+patientCheckup?.patient?.id + index" aria-expanded="false"
+                        [attr.aria-controls]="patientCheckup?.patient?.id + index">
+                        <div class="inner d-flex">
+                          <div class="patient-info d-flex">
+                            <img
+                              [src]="(patientCheckup?.patient?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                              style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                            <div class="data">
+                              <h5 class="mb-0">{{patientCheckup?.patient?.firstName}}
+                                {{patientCheckup?.patient?.lastName}}</h5>
+                              <p class="text-muted m-0">{{patientCheckup?.radiologies?.length}} Radiologies to do</p>
+                            </div>
+                          </div>
+                        </div>
+                      </button>
+                    </h2>
+                    <div [id]="patientCheckup?.patient?.id + index" class="accordion-collapse collapse mt-2"
+                      data-bs-parent="#accordionExample">
+                      <div class="accordion-body">
+                        <div class="inner card-light rounded p-3">
+                          <p><strong><a href="mailto:{{patientCheckup?.patient?.email}}"><i class="fa-regular fa-envelope me-2 cursor-pointer"></i></a> Email: </strong>{{patientCheckup?.patient?.email}}</p>
+                          <p><strong><a href="tel:{{patientCheckup?.patient?.phoneNumber}}"><i class="fa-solid fa-phone-flip me-2 cursor-pointer"></i></a> Phone Number: </strong>{{patientCheckup?.patient?.phoneNumber}}</p>
+                          <div class="d-flex justify-content-between align-items-center mb-2"
+                            *ngFor="let checkup of patientCheckup?.radiologies; let i = index">
+                            <p class="m-0">{{checkup?.name}}</p>
+                            <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                              <button class="btn-chat btn rounded-pill"
+                                style="background-color: #34d1bf; color: #FFF;" (click)="uploadResult(patientCheckup?.patient, checkup, i)">Upload Result <i
+                                  class="fa-solid fa-angle-right ms-2"></i></button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

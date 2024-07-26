@@ -1,0 +1,108 @@
+<section class="py-2 px-3">
+    <div class="container">
+        <h1 class="display-5" *ngIf="data == null">Add Medicine</h1>
+        <h1 class="display-5" *ngIf="data != null">Update Medicine</h1>
+        <form class="example-form" [formGroup]="medicineFormData" (ngSubmit)="submitForm()">
+            <div class="row">
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Name</mat-label>
+                        <input type="text" formControlName="name" matInput placeholder="Ex. Panadole">
+                        <mat-error
+                            *ngIf="medicineFormData.get('name')?.getError('required') && medicineFormData.get('name')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Category</mat-label>
+                        <input type="text" formControlName="category" matInput placeholder="Ex. Residence">
+                        <mat-error
+                            *ngIf="medicineFormData.get('category')?.getError('required') && medicineFormData.get('category')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Price</mat-label>
+                        <input type="number" step=".05" formControlName="price" matInput placeholder="Ex. 6">
+                        <mat-error
+                            *ngIf="medicineFormData.get('price')?.getError('required') && medicineFormData.get('price')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="medicineFormData.get('price')?.getError('min') && medicineFormData.get('price')?.touched">
+                            This field value <strong>must be equal or greater than 1</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Quantity</mat-label>
+                        <input type="number" step="1" formControlName="quantity" matInput placeholder="Ex. 10">
+                        <mat-error
+                            *ngIf="medicineFormData.get('quantity')?.getError('required') && medicineFormData.get('quantity')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                        <mat-error
+                            *ngIf="medicineFormData.get('quantity')?.getError('notInteger') && medicineFormData.get('quantity')?.touched">
+                            This field's value must be an <strong>integer</strong></mat-error>
+                        <mat-error
+                            *ngIf="medicineFormData.get('quantity')?.getError('min') && medicineFormData.get('quantity')?.touched">
+                            This field's value must be <strong>equal or greater than 1</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Production Date</mat-label>
+                        <input formControlName="productionDate" matInput [matDatepicker]="prod">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="prod"></mat-datepicker-toggle>
+                        <mat-datepicker #prod></mat-datepicker>
+                        <mat-error
+                            *ngIf="medicineFormData.get('productionDate')?.getError('required') && medicineFormData.get('productionDate')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Expiry Date</mat-label>
+                        <input formControlName="expiryDate" matInput [matDatepicker]="exp">
+                        <mat-hint>MM/DD/YYYY</mat-hint>
+                        <mat-datepicker-toggle matIconSuffix [for]="exp"></mat-datepicker-toggle>
+                        <mat-datepicker #exp></mat-datepicker>
+                        <mat-error
+                            *ngIf="medicineFormData.get('expiryDate')?.getError('required') && medicineFormData.get('expiryDate')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Indecations</mat-label>
+                        <textarea formControlName="indecations" matInput
+                            placeholder="Ex. could be used in cases..."></textarea>
+                        <mat-error
+                            *ngIf="medicineFormData.get('indecations')?.getError('required') && medicineFormData.get('indecations')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+                <div class="col-6 p-1">
+                    <mat-form-field class="w-100" appearance="outline">
+                        <mat-label>Indecations</mat-label>
+                        <textarea formControlName="sideEffects" matInput
+                            placeholder="Ex. cases you must avoid this medicine is..."></textarea>
+                        <mat-error
+                            *ngIf="medicineFormData.get('sideEffects')?.getError('required') && medicineFormData.get('sideEffects')?.touched">
+                            This field is <strong>required</strong></mat-error>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <div class="hstack justify-content-end">
+                <button [disabled]="medicineFormData.status != 'VALID'" mat-raised-button *ngIf="data == null"
+                    color="primary">Add Medicine
+                    Data</button>
+
+                <button [disabled]="medicineFormData.status != 'VALID'" mat-raised-button *ngIf="data != null"
+                    color="warn">Update Medicine Data</button>
+            </div>
+        </form>
+    </div>
+</section>

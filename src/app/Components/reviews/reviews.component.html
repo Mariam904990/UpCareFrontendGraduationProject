@@ -1,0 +1,208 @@
+<section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="input d-flex align-items-center px-3 py-1 h-100">
+          <i class="fa-solid fa-magnifying-glass pe-3"></i>
+          <input type="search" placeholder="search by patient name..." class="form-control" [(ngModel)]="searchTerm">
+        </div>
+      </div>
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3" *ngIf="(reviews | searchInFeedback: searchTerm).length > 0">Reviews</h1>
+    <h1 class="mb-3" *ngIf="(reviews | searchInFeedback: searchTerm).length == 0">No Reviews Recorded</h1>
+    <div class="row">
+      <div class="col-5">
+        <div class="emergency table-large container-fluid py-3 rounded shadow"
+          *ngIf="(reviews | searchInFeedback: searchTerm).length > 0">
+          <div class="cell mx-2 rounded mb-2" *ngFor="let review of (reviews | searchInFeedback: searchTerm)">
+            <div class="row g-0 py-2 px-2" (click)="selectReview(review.id)">
+              <div class="col-8">
+                <div class="inner d-flex">
+                  <img [src]="(review?.patient?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                    style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                  <div class="data overflow-hidden">
+                    <h5 class="mb-0">{{review?.patient?.firstName}} {{review?.patient?.lastName}}</h5>
+                    <p class="text-muted m-0 text-nowrap text-truncate">{{review?.comment}}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                  <button class="btn-feed btn rounded-pill" (click)="selectReview(review?.id)">View Details <i
+                      class="fa-solid fa-angle-right ms-2"></i></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-7" *ngIf="(reviews | searchInFeedback: searchTerm).length > 0">
+        <div class="emergency table-large rounded shadow position-relative">
+          <div class="header-chat mb-1 px-3 py-2 border-bottom d-flex">
+            <div class="header-info w-100 d-flex justify-content-between" *ngIf="isOpen">
+              <div class="d-flex">
+                <img
+                  [src]="(selectedFeedback?.patient?.gender == 0)?'./assets/user-male.svg':'./assets/user-female.svg'"
+                  style="height: 50px; width: 50px;" class="rounded me-2" alt="">
+                <div class="data flex-grow-1">
+                  <h5 class="mb-0">{{selectedFeedback?.patient?.firstName}} {{selectedFeedback?.patient?.lastName}}</h5>
+                  <p class="text-muted small m-0">Rate: {{selectedFeedback?.rate}} out of 5</p>
+                </div>
+              </div>
+              <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                <button class="btn-chat btn rounded-pill" routerLink="/patients/{{selectedFeedback?.patient?.id}}">Click
+                  to view patient profile <i class="fa-solid fa-angle-right ms-2"></i></button>
+              </div>
+            </div>
+            <div class="header-info d-flex py-2" *ngIf="!isOpen">
+              <h5>Select a feedback to view info</h5>
+            </div>
+          </div>
+          <div class="messages-area p-3" style="height: 58vh;" *ngIf="isOpen">
+            <div class="feed shadow p-2 mb-2 position-relative w-75">
+              <p class="mb-5">{{selectedFeedback?.comment}}</p>
+              <span class="position-absolute bottom-0 end-0 m-2">{{getTimeOnly(selectedFeedback?.dateTime)}} <i
+                  class="fa-regular fa-clock ms-1 me-3"></i>
+                {{getDateOnly(selectedFeedback?.dateTime)}} <i class="fa-regular fa-calendar-days ms-1"></i></span>
+            </div>
+          </div>
+          <div class="no-messages px-3 d-flex justify-content-center align-items-center" style="height: 58vh;"
+            *ngIf="!isOpen">
+            <div class="body w-50 text-center">
+              <img class="w-100" src="./assets/nothing-selected.jpg" alt="">
+              <h2 class="display-6">No Feedback Selected</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section>
+  <div class="container-fluid py-3">
+    <div class="header row justify-content-between mb-3">
+      <div class="col-9">
+        <div class="row">
+          <div class="col-12">
+            <div class="input d-flex align-items-center px-3 py-1 h-100">
+              <i class="fa-solid fa-magnifying-glass pe-3"></i>
+              <input type="search" placeholder="search by patient name..." class="form-control">
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="col-2">
+        <app-logged-user></app-logged-user>
+      </div>
+    </div>
+    <h1 class="mb-3">Reviews</h1>
+    <div class=" container-fluid py-3">
+
+      <div class="row d-flex justify-content-around ">
+        <div class="col-4 rounded shadow bg-white p-3">
+          <h3>Patients Feedbacks</h3>
+
+
+
+          <div *ngFor="let chat of chats"  class="row cell rounded py-3 mb-2" style="cursor: pointer;" (click)="chatDisplay(chat.id)">
+            <div class="col-8">
+              <div class="inner d-flex">
+                <img src="./assets/download.png" style="height: 70px; width: 30px; border-radius: 10px;" class=" me-2"
+                  alt="">
+                <div class="data">
+                  <h5 class="mb-0">{{chat.recepientName}}</h5>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                </div>
+              </div>
+            </div>
+            <div class=" col-4">
+              <div class="inner d-flex align-items-center flex-row-reverse h-100">
+                <p class="m-0" style="color:#34D1BF;">Rating: 5</p>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+
+        <div id="chatDiv" class="col-7 py-3 rounded shadow bg-white" *ngIf="selectedChat" >
+          <div class="row">
+            <div class="col-12">
+              <div class="top d-flex justify-content-between">
+                <div class="d-flex"><img src="./assets/download.png"
+                    style="height: 50px; width: 50px; border-radius: 10px;" class=" me-2" alt="">
+                  <h5 class="mb-0 d-flex align-items-center">{{selectedChat!.recepientName}}</h5>
+                </div>
+                <div class="">
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <i class="fa-solid fa-star" style="color: #ffd12b;"></i>
+                  <p class="m-0" style="color:#34D1BF;">Rating: 5</p>
+                </div>
+              </div>
+              <hr>
+
+              <div class="row my-5">
+                <div class="col-7 p-3 mb-3 ms-3" style="background-color: #0255e3; border-radius: 10px 10px 10px 0px;">
+                  <p class="m-0 text-white">Hello Managers,
+                    thanks for your efforts and effective services. I wrote this feedback to thank you and ask you to
+                    provide a cash on
+                    delivery service.
+                    thanks again.<br>
+                    Emrgency in Room 30. go there quickly</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+
+        <div id="chatDiv" class="col-7 py-3 rounded shadow bg-white" *ngIf="!isOpen" >
+          <div class="row">
+            <div class="col-12">
+              <div class="top d-flex justify-content-between">
+                <div class="d-flex"><img src="./assets/download.png"
+                    style="height: 50px; width: 50px; border-radius: 10px;" class=" me-2" alt="">
+                  <h5 class="mb-0 d-flex align-items-center">Your name</h5>
+                </div>
+                <div class="">
+                  <i class="fa-solid fa-star" style="color: #ccc;"></i>
+                  <i class="fa-solid fa-star" style="color: #ccc;"></i>
+                  <i class="fa-solid fa-star" style="color: #ccc;"></i>
+                  <i class="fa-solid fa-star" style="color: #ccc;"></i>
+                  <i class="fa-solid fa-star" style="color: #ccc;"></i>
+                  <p class="m-0" style="color:#34D1BF;">Rating: 0</p>
+                </div>
+              </div>
+              <hr>
+
+              <div class="row my-5">
+                <h2 class="text-center mt-5">
+                  please let us know your review
+                </h2>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</section> -->
